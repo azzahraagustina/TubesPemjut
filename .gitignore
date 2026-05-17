@@ -1,0 +1,18 @@
+# Python bytecode (hasil compile otomatis)
+__pycache__/
+*.py[cod]
+
+# Virtual Environment (folder env lokal kalian)
+venv/
+.venv/
+env/
+
+# Environment Variables (file rahasia password db)
+.env
+
+# Database SQLite (biasanya dipakai buat latihan awal)
+*.sqlite3
+
+# Folder IDE (biar settingan VS Code pribadi ga masuk git)
+.vscode/
+.idea/

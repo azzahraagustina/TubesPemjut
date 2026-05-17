@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <title>TK Badak Putih - Beranda</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+
+<header>
+    <div class="decor-circle circle-1"></div>
+    <div class="decor-circle circle-2"></div>
+    
+    <div class="banner-wrapper">
+        <div class="header-content">
+            <img src="/tk.jpeg" class="logo-circle" alt="Logo TK Badak Putih">
+            <div class="ribbon-title">TK BADAK PUTIH</div>
+            <p class="slogan">Ceria, Cerdas, Berakhlak Mulia! 🦏✨</p>
+        </div>
+    </div>
+</header>
+
+<nav>
+    <button class="nav-btn red">🏰 PROFIL</button>
+    <button class="nav-btn blue">📝 PPDB</button>
+    <button class="nav-btn green">📅 JADWAL</button>
+    <button class="nav-btn pink">📩 LAPORAN</button>
+</nav>
+
+<main>
+    <div class="card">
+        <h2 class="welcome-title">Selamat Datang!</h2>
+        <div class="welcome-text">
+            <p>Selamat datang di Official Website <strong>TK Badak Putih</strong>.</p>
+            <p>Tempat di mana ananda belajar dengan gembira, bermain dengan ceria, dan tumbuh menjadi pribadi yang cerdas serta berakhlak mulia.</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2 class="welcome-title" style="color: #42a5f5;">Formulir Pendaftaran Siswa Baru (PPDB)</h2>
+        <form action="/submit-ppdb" method="POST" style="display: flex; flex-direction: column; gap: 15px; text-align: left; max-width: 500px; margin: 0 auto;">
+            
+            <label><strong>Nama Calon Siswa:</strong></label>
+            <input type="text" name="nama_anak" required style="padding: 10px; border-radius: 8px; border: 2px solid #42a5f5;">
+
+            <label><strong>Nama Orang Tua / Wali:</strong></label>
+            <input type="text" name="nama_ortu" required style="padding: 10px; border-radius: 8px; border: 2px solid #42a5f5;">
+
+            <label><strong>No. HP / WhatsApp:</strong></label>
+            <input type="text" name="no_hp" required style="padding: 10px; border-radius: 8px; border: 2px solid #42a5f5;">
+
+            <label><strong>Alamat Rumah:</strong></label>
+            <textarea name="alamat" rows="3" required style="padding: 10px; border-radius: 8px; border: 2px solid #42a5f5; font-family: sans-serif;"></textarea>
+
+            <button type="submit" class="nav-btn blue" style="box-shadow: none; margin-top: 10px; font-size: 16px;">Kirim Pendaftaran</button>
+        </form>
+    </div>
+</main>
+
+</body>
+</html>
