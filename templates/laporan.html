@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TK Badak Putih - Laporan & Rapor</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Quicksand', system-ui, 'Comic Neue', 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #fff9e8 0%, #fff1dc 100%);
+            min-height: 100vh;
+            color: #2d3e50;
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        .decor-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 215, 150, 0.3);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .circle-1 {
+            width: 280px;
+            height: 280px;
+            top: -80px;
+            left: -60px;
+            background: radial-gradient(circle, #ffe6b3, #ffd27a);
+            opacity: 0.4;
+        }
+        .circle-2 {
+            width: 380px;
+            height: 380px;
+            bottom: -100px;
+            right: -80px;
+            background: radial-gradient(circle, #b9e3ff, #7fc9ff);
+            opacity: 0.25;
+        }
+
+        header {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffb347, #ff8c42);
+            border-radius: 0 0 60px 60px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .banner-wrapper {
+            padding: 20px 0 30px 0;
+            text-align: center;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .logo-circle {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #fff8e7;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: white;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+        .logo-circle:hover {
+            transform: scale(1.02);
+        }
+
+        .ribbon-title {
+            background: #ffecb3;
+            display: inline-block;
+            padding: 12px 28px;
+            margin: 15px 0 8px;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #c23b00;
+            border-radius: 60px;
+            box-shadow: 0 8px 0 #b64926;
+            text-transform: uppercase;
+        }
+
+        .slogan {
+            background: rgba(255,245,215,0.9);
+            backdrop-filter: blur(3px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4a2a0e;
+        }
+
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 35px 20px 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .nav-btn {
+            border: none;
+            background: white;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            color: #2d3e50;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .nav-btn.red { background: #ff7b5c; color: white; border-bottom: 3px solid #c73e1c; }
+        .nav-btn.blue { background: #42a5f5; color: white; border-bottom: 3px solid #1565c0; }
+        .nav-btn.green { background: #66bb6a; color: white; border-bottom: 3px solid #2e7d32; }
+        .nav-btn.pink { background: #f48fb1; color: white; border-bottom: 3px solid #c2185b; }
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.02);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.15);
+        }
+        .nav-btn.active {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px #fff3cf, 0 6px 12px black;
+        }
+
+        main {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 25px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .card {
+            background: rgba(255, 255, 245, 0.97);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            padding: 28px 32px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255,215,150,0.6);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            color: #f57c00;
+            border-left: 8px solid #ffa726;
+            padding-left: 20px;
+        }
+
+        /* Filter siswa & laporan */
+        .filter-box {
+            background: #fff4e6;
+            border-radius: 60px;
+            padding: 15px 25px;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+        .filter-box label {
+            font-weight: bold;
+            color: #b64926;
+        }
+        .student-select {
+            padding: 10px 18px;
+            border-radius: 40px;
+            border: 2px solid #ffb347;
+            background: white;
+            font-size: 1rem;
+            font-weight: bold;
+            font-family: inherit;
+        }
+        .btn-rapor {
+            background: #f48fb1;
+            border: none;
+            padding: 10px 24px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-rapor:hover {
+            background: #f06292;
+            transform: scale(1.02);
+        }
+
+        /* Rapor kartu */
+        .rapor-card {
+            background: white;
+            border-radius: 40px;
+            padding: 20px;
+            margin-top: 20px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .siswa-header {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            border-bottom: 3px solid #ffe0b5;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+        .avatar {
+            background: #ffb347;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+        .info-siswa h3 {
+            font-size: 1.7rem;
+            color: #c23b00;
+        }
+        .info-siswa p {
+            color: #6b4c2c;
+        }
+
+        .nilai-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin: 20px 0;
+        }
+        .nilai-item {
+            flex: 1;
+            min-width: 180px;
+        }
+        .nilai-label {
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #4a2a0e;
+        }
+        .progress-bar {
+            background: #ffe0b5;
+            border-radius: 30px;
+            height: 12px;
+            width: 100%;
+            overflow: hidden;
+        }
+        .progress-fill {
+            background: #ff8c42;
+            width: 0%;
+            height: 100%;
+            border-radius: 30px;
+            transition: width 0.5s ease;
+        }
+        .nilai-angka {
+            margin-top: 5px;
+            font-size: 0.9rem;
+            font-weight: bold;
+        }
+
+        .catatan-guru {
+            background: #fff8f0;
+            padding: 18px;
+            border-radius: 30px;
+            margin: 20px 0;
+            border-left: 8px solid #ffb347;
+        }
+        .download-btn {
+            background: #66bb6a;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 40px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .download-btn:hover {
+            background: #4caf50;
+            transform: translateY(-2px);
+        }
+
+        footer {
+            text-align: center;
+            color: #8b6946;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            padding: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .ribbon-title { font-size: 1.5rem; padding: 8px 20px; }
+            .slogan { font-size: 0.9rem; }
+            .nav-btn { padding: 8px 18px; font-size: 0.9rem; }
+            .welcome-title { font-size: 1.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="decor-circle circle-1"></div>
+    <div class="decor-circle circle-2"></div>
+
+    <header>
+        <div class="banner-wrapper">
+            <div class="header-content">
+                <img src="/tk.jpeg" class="logo-circle" alt="Logo TK Badak Putih" onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle fill=%22%23ffb347%22 cx=%2250%22 cy=%2250%22 r=%2245%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22white%22%3E🦏%3C/text%3E%3C/svg%3E'">
+                <div class="ribbon-title">TK BADAK PUTIH</div>
+                <p class="slogan">Ceria, Cerdas, Berakhlak Mulia! 🦏✨</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <a href="profil.html" class="nav-btn red">🏰 PROFIL</a>
+        <a href="index.html" class="nav-btn blue">📝 PPDB</a>
+        <a href="jadwal.html" class="nav-btn green">📅 JADWAL</a>
+        <a href="laporan.html" class="nav-btn pink active">📩 LAPORAN</a>
+    </nav>
+
+    <main>
+        <div class="card">
+            <h2 class="welcome-title">📊 Laporan Perkembangan & Rapor</h2>
+            <p style="margin-bottom: 20px;">Lihat laporan perkembangan ananda secara berkala. Pilih nama siswa untuk melihat rapor semester terbaru.</p>
+
+            <div class="filter-box">
+                <label>👧 Pilih Nama Siswa:</label>
+                <select id="studentSelect" class="student-select">
+                    <option value="Aisha">Aisha Putri (TK B)</option>
+                    <option value="Bima">Bima Sakti (TK A)</option>
+                    <option value="Cinta">Cinta Laura (TK B)</option>
+                    <option value="Dion">Dion Alvaro (TK A)</option>
+                </select>
+                <button id="refreshRapor" class="btn-rapor">📄 Tampilkan Rapor</button>
+            </div>
+
+            <div id="raporContainer">
+                <!-- Konten rapor akan diisi oleh JavaScript -->
+                <div class="rapor-card" style="text-align: center; padding: 40px;">
+                    🦏 Silakan pilih siswa dan klik "Tampilkan Rapor"
+                </div>
+            </div>
+        </div>
+
+        <!-- Laporan kegiatan bulanan -->
+        <div class="card">
+            <h2 class="welcome-title">📆 Laporan Bulanan Sekolah</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                <div style="flex: 1; background: #fff6e6; border-radius: 32px; padding: 18px;">
+                    <h3>📖 April 2026</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✅ Jumlah siswa aktif: 78 anak</li>
+                        <li>✅ Kegiatan unggulan: Outing ke Taman Pintar</li>
+                        <li>✅ Rata-rata kehadiran: 94%</li>
+                        <li>✅ Lomba mewarnai tingkat kecamatan: Juara 2</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; background: #fff6e6; border-radius: 32px; padding: 18px;">
+                    <h3>📖 Mei 2026</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✅ Peringatan Hardiknas & pentas seni</li>
+                        <li>✅ Kunjungan edukasi ke perpustakaan</li>
+                        <li>✅ Evaluasi tengah semester (ETS)</li>
+                        <li>✅ Workshop parenting: "Mendidik dengan Hati"</li>
+                    </ul>
+                </div>
+                <div style="flex: 1; background: #fff6e6; border-radius: 32px; padding: 18px;">
+                    <h3>📖 Juni 2026 (proyeksi)</h3>
+                    <ul style="margin-left: 20px; margin-top: 10px;">
+                        <li>✅ Persiapan lomba antar TK se-kota</li>
+                        <li>✅ Market Day hasil karya anak</li>
+                        <li>✅ Pembagian rapor semester genap</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Catatan orang tua / feedback -->
+        <div class="card">
+            <h2 class="welcome-title">📝 Feedback & Konsultasi</h2>
+            <div style="background: #fffbee; border-radius: 32px; padding: 20px;">
+                <p>💬 Orang tua dapat mengirimkan pesan atau konsultasi mengenai laporan perkembangan anak melalui WhatsApp resmi sekolah:</p>
+                <p style="margin: 15px 0;"><strong>📱 0812-3456-7890 (Admin Laporan)</strong></p>
+                <button id="contactWa" class="download-btn" style="background:#25D366;">💬 Hubungi via WhatsApp</button>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>🦏 TK Badak Putih | Laporan Perkembangan & Rapor Digital | 📞 0812-3456-7890 | © 2026 Yayasan Ceria Bangsa</p>
+        <p style="font-size:0.75rem;">Jl. Kemuning Raya No.28, Kota Pelangi, Jawa Barat</p>
+    </footer>
+
+    <script>
+        // Data nilai dan catatan untuk setiap siswa (simulasi)
+        const dataSiswa = {
+            Aisha: {
+                namaLengkap: "Aisha Putri Ramadhani",
+                kelas: "TK B (Usia 5-6 tahun)",
+                waliKelas: "Ibu Dewi, S.Pd",
+                semester: "Genap 2025/2026",
+                nilai: {
+                    "Nilai Agama & Budi Pekerti": 90,
+                    "Motorik Halus & Kreativitas": 88,
+                    "Motorik Kasar & Olahraga": 85,
+                    "Bahasa & Literasi": 92,
+                    "Kognitif & Sains": 89,
+                    "Sosial Emosional": 91
+                },
+                catatan: "Aisha sangat aktif dalam kegiatan mewarnai dan bercerita. Ia mudah bergaul dengan teman-teman dan selalu bersemangat saat pelajaran bahasa Inggris. Perlu ditingkatkan fokus saat kegiatan berhitung, namun secara keseluruhan perkembangannya sangat baik.",
+                prestasi: "Juara Harapan 2 Lomba Mewarnai tingkat kecamatan."
+            },
+            Bima: {
+                namaLengkap: "Bima Sakti Pratama",
+                kelas: "TK A (Usia 4-5 tahun)",
+                waliKelas: "Ibu Rina, S.Pd",
+                semester: "Genap 2025/2026",
+                nilai: {
+                    "Nilai Agama & Budi Pekerti": 85,
+                    "Motorik Halus & Kreativitas": 80,
+                    "Motorik Kasar & Olahraga": 94,
+                    "Bahasa & Literasi": 78,
+                    "Kognitif & Sains": 82,
+                    "Sosial Emosional": 88
+                },
+                catatan: "Bima sangat energik dan unggul dalam kegiatan olahraga serta permainan fisik. Ia perlu lebih sabar saat kegiatan yang membutuhkan ketelitian seperti menggunting dan menempel. Komunikasi dengan guru dan teman sudah cukup baik, mulai terbiasa berbagi.",
+                prestasi: "Peserta aktif lomba lari gembira."
+            },
+            Cinta: {
+                namaLengkap: "Cinta Laura Aulia",
+                kelas: "TK B (Usia 5-6 tahun)",
+                waliKelas: "Ibu Dewi, S.Pd",
+                semester: "Genap 2025/2026",
+                nilai: {
+                    "Nilai Agama & Budi Pekerti": 95,
+                    "Motorik Halus & Kreativitas": 96,
+                    "Motorik Kasar & Olahraga": 87,
+                    "Bahasa & Literasi": 94,
+                    "Kognitif & Sains": 90,
+                    "Sosial Emosional": 93
+                },
+                catatan: "Cinta adalah siswa yang sangat kreatif, rajin mengerjakan tugas, dan suka membantu teman. Kemampuan membaca dan menulisnya sudah berkembang pesat. Ia juga aktif dalam kegiatan seni tari. Pertahankan semangat belajarnya!",
+                prestasi: "Terpilih sebagai duta literasi kelas TK B."
+            },
+            Dion: {
+                namaLengkap: "Dion Alvaro Setiawan",
+                kelas: "TK A (Usia 4-5 tahun)",
+                waliKelas: "Ibu Rina, S.Pd",
+                semester: "Genap 2025/2026",
+                nilai: {
+                    "Nilai Agama & Budi Pekerti": 82,
+                    "Motorik Halus & Kreativitas": 79,
+                    "Motorik Kasar & Olahraga": 88,
+                    "Bahasa & Literasi": 81,
+                    "Kognitif & Sains": 84,
+                    "Sosial Emosional": 76
+                },
+                catatan: "Dion anak yang ceria dan cukup mandiri. Mulai menunjukkan perkembangan dalam mengenal angka dan huruf. Masih perlu bimbingan dalam berbagi mainan dan menunggu giliran. Orang tua diharapkan mendukung latihan motorik halus di rumah.",
+                prestasi: "Peningkatan kehadiran 100% selama 2 bulan terakhir."
+            }
+        };
+
+        function renderRapor(siswaKey) {
+            const siswa = dataSiswa[siswaKey];
+            if (!siswa) return;
+            
+            const container = document.getElementById('raporContainer');
+            // Buat kartu rapor
+            let nilaiHTML = '';
+            for (let [aspek, nilai] of Object.entries(siswa.nilai)) {
+                let persen = nilai;
+                nilaiHTML += `
+                    <div class="nilai-item">
+                        <div class="nilai-label">${aspek}</div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: ${persen}%;"></div>
+                        </div>
+                        <div class="nilai-angka">${persen} / 100</div>
+                    </div>
+                `;
+            }
+            
+            const raporHTML = `
+                <div class="rapor-card">
+                    <div class="siswa-header">
+                        <div class="avatar">🦏</div>
+                        <div class="info-siswa">
+                            <h3>${siswa.namaLengkap}</h3>
+                            <p>${siswa.kelas} | Wali Kelas: ${siswa.waliKelas} | Semester: ${siswa.semester}</p>
+                        </div>
+                    </div>
+                    <div class="nilai-grid">
+                        ${nilaiHTML}
+                    </div>
+                    <div class="catatan-guru">
+                        <strong>📝 Catatan Guru:</strong><br>
+                        ${siswa.catatan}<br><br>
+                        <strong>🏆 Prestasi / Capaian:</strong> ${siswa.prestasi}
+                    </div>
+                    <div style="display: flex; gap: 15px; justify-content: flex-end;">
+                        <button class="download-btn" id="downloadRaporBtn">⬇️ Unduh Rapor PDF (simulasi)</button>
+                    </div>
+                </div>
+            `;
+            container.innerHTML = raporHTML;
+            
+            // Tambahkan event listener untuk tombol unduh simulasi
+            const downloadBtn = document.getElementById('downloadRaporBtn');
+            if (downloadBtn) {
+                downloadBtn.addEventListener('click', () => {
+                    alert(`Simulasi unduh rapor untuk ${siswa.namaLengkap}.\nFitur unduh PDF akan tersedia pada versi berikutnya.`);
+                });
+            }
+        }
+        
+        // Event saat tombol tampilkan rapor di klik
+        const refreshBtn = document.getElementById('refreshRapor');
+        const studentSelect = document.getElementById('studentSelect');
+        
+        function updateRapor() {
+            const selected = studentSelect.value;
+            renderRapor(selected);
+        }
+        
+        refreshBtn.addEventListener('click', updateRapor);
+        // Tampilkan rapor default pertama kali (Aisha)
+        window.addEventListener('DOMContentLoaded', () => {
+            renderRapor('Aisha');
+        });
+        
+        // Tombol WhatsApp
+        const waBtn = document.getElementById('contactWa');
+        if (waBtn) {
+            waBtn.addEventListener('click', () => {
+                window.open('https://wa.me/6281234567890?text=Halo%20Admin%20TK%20Badak%20Putih,%20saya%20ingin%20konsultasi%20mengenai%20laporan%20perkembangan%20anak.', '_blank');
+                alert('Membuka WhatsApp... pastikan nomor tersimpan.');
+            });
+        }
+        
+        // Fallback gambar logo
+        const logoImg = document.querySelector('.logo-circle');
+        if (logoImg) {
+            logoImg.addEventListener('error', function() {
+                if (!this.getAttribute('data-fallback')) {
+                    this.setAttribute('data-fallback', 'true');
+                    this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle fill="%23ffb347" cx="50" cy="50" r="45"/%3E%3Ctext x="50" y="68" font-size="40" text-anchor="middle" fill="white"%3E🦏%3C/text%3E%3C/svg%3E';
+                }
+            });
+        }
+    </script>
+</body>
+</html>

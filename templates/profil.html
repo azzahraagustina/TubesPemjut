@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>TK Badak Putih - Profil Sekolah</title>
+    <!-- Menggunakan internal style yang mereplikasi dan menyempurnakan desain asli -->
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', 'Quicksand', system-ui, 'Comic Neue', 'Poppins', sans-serif;
+            background: linear-gradient(145deg, #fff9e8 0%, #fff1dc 100%);
+            min-height: 100vh;
+            color: #2d3e50;
+            position: relative;
+            padding-bottom: 2rem;
+        }
+
+        /* Dekorasi Lingkaran Latar */
+        .decor-circle {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 215, 150, 0.3);
+            z-index: 0;
+            pointer-events: none;
+        }
+        .circle-1 {
+            width: 280px;
+            height: 280px;
+            top: -80px;
+            left: -60px;
+            background: radial-gradient(circle, #ffe6b3, #ffd27a);
+            opacity: 0.4;
+        }
+        .circle-2 {
+            width: 380px;
+            height: 380px;
+            bottom: -100px;
+            right: -80px;
+            background: radial-gradient(circle, #b9e3ff, #7fc9ff);
+            opacity: 0.25;
+        }
+
+        header {
+            position: relative;
+            overflow: hidden;
+            background: linear-gradient(135deg, #ffb347, #ff8c42);
+            border-radius: 0 0 60px 60px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, 0.1);
+            z-index: 2;
+        }
+
+        .banner-wrapper {
+            padding: 20px 0 30px 0;
+            text-align: center;
+            position: relative;
+        }
+
+        .header-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 3;
+        }
+
+        .logo-circle {
+            width: 110px;
+            height: 110px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid #fff8e7;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            background: white;
+            padding: 5px;
+            transition: transform 0.3s ease;
+        }
+        .logo-circle:hover {
+            transform: scale(1.02);
+        }
+
+        .ribbon-title {
+            background: #ffecb3;
+            display: inline-block;
+            padding: 12px 28px;
+            margin: 15px 0 8px;
+            font-size: 2rem;
+            font-weight: 800;
+            letter-spacing: 2px;
+            color: #c23b00;
+            border-radius: 60px;
+            box-shadow: 0 8px 0 #b64926;
+            text-transform: uppercase;
+            font-family: 'Fredoka One', 'Segoe UI', cursive;
+        }
+
+        .slogan {
+            background: rgba(255,245,215,0.9);
+            backdrop-filter: blur(3px);
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #4a2a0e;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+        }
+
+        /* Navigasi */
+        nav {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 20px;
+            margin: 35px 20px 20px;
+            position: relative;
+            z-index: 5;
+        }
+
+        .nav-btn {
+            border: none;
+            background: white;
+            padding: 12px 28px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            color: #2d3e50;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.1);
+            font-family: inherit;
+            text-align: center;
+        }
+
+        .nav-btn.red {
+            background: #ff7b5c;
+            color: white;
+            border-bottom: 3px solid #c73e1c;
+        }
+        .nav-btn.blue {
+            background: #42a5f5;
+            color: white;
+            border-bottom: 3px solid #1565c0;
+        }
+        .nav-btn.green {
+            background: #66bb6a;
+            color: white;
+            border-bottom: 3px solid #2e7d32;
+        }
+        .nav-btn.pink {
+            background: #f48fb1;
+            color: white;
+            border-bottom: 3px solid #c2185b;
+        }
+        .nav-btn:hover {
+            transform: translateY(-3px);
+            filter: brightness(1.02);
+            box-shadow: 0 10px 18px rgba(0,0,0,0.15);
+        }
+        .nav-btn.active {
+            transform: scale(1.02);
+            box-shadow: 0 0 0 3px #fff3cf, 0 6px 12px black;
+            filter: brightness(1.05);
+        }
+
+        /* MAIN CARD */
+        main {
+            max-width: 1300px;
+            margin: 20px auto;
+            padding: 0 25px 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 35px;
+            position: relative;
+            z-index: 3;
+        }
+
+        .card {
+            background: rgba(255, 255, 245, 0.97);
+            backdrop-filter: blur(2px);
+            border-radius: 48px;
+            padding: 28px 32px;
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s ease;
+            border: 1px solid rgba(255,215,150,0.6);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.12);
+        }
+
+        .welcome-title {
+            font-size: 2rem;
+            font-weight: 800;
+            margin-bottom: 20px;
+            position: relative;
+            display: inline-block;
+            color: #f57c00;
+            border-left: 8px solid #ffa726;
+            padding-left: 20px;
+        }
+
+        .profil-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            margin-top: 15px;
+        }
+        .info-box {
+            flex: 1;
+            min-width: 210px;
+            background: #fff7e8;
+            border-radius: 32px;
+            padding: 18px 20px;
+            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
+        }
+        .info-box h3 {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-size: 1.5rem;
+            color: #e65100;
+            margin-bottom: 15px;
+        }
+        .info-box p, .info-box li {
+            font-size: 1rem;
+            line-height: 1.45;
+            color: #2c3e2f;
+        }
+        .info-box ul {
+            list-style-type: none;
+            padding-left: 5px;
+        }
+        .info-box li {
+            margin: 12px 0;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+        }
+        .info-box li::before {
+            content: "🦏";
+            font-size: 1.1rem;
+        }
+        .visi-misi {
+            background: #fff1e0;
+            border-radius: 36px;
+            padding: 20px 28px;
+            margin-top: 12px;
+        }
+        .visi-misi h3 {
+            font-size: 1.6rem;
+            color: #bf5b1c;
+            margin-bottom: 12px;
+        }
+        .visi-misi p {
+            font-size: 1.1rem;
+            margin: 12px 0;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 28px;
+        }
+
+        .fasilitas-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin: 20px 0 5px;
+        }
+        .fasilitas-item {
+            background: #ffe1b3;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        hr {
+            margin: 25px 0;
+            border: 2px dotted #ffce8e;
+        }
+
+        .btn-kecil {
+            background: #ffb347;
+            padding: 8px 18px;
+            border-radius: 40px;
+            color: white;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 12px;
+            text-decoration: none;
+        }
+
+        footer {
+            text-align: center;
+            color: #8b6946;
+            margin-top: 15px;
+            font-size: 0.85rem;
+            padding: 10px;
+        }
+
+        @media (max-width: 700px) {
+            .ribbon-title { font-size: 1.5rem; padding: 8px 20px; }
+            .slogan { font-size: 0.9rem; }
+            .nav-btn { padding: 8px 18px; font-size: 0.9rem; }
+            .card { padding: 20px; }
+            .welcome-title { font-size: 1.7rem; }
+            .info-box h3 { font-size: 1.3rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Lingkaran dekoratif sesuai asli -->
+    <div class="decor-circle circle-1"></div>
+    <div class="decor-circle circle-2"></div>
+
+    <header>
+        <div class="banner-wrapper">
+            <div class="header-content">
+                <img src="/tk.jpeg" class="logo-circle" alt="Logo TK Badak Putih" onerror="this.src='https://placehold.co/110x110?text=🦏'">
+                <div class="ribbon-title">TK BADAK PUTIH</div>
+                <p class="slogan">Ceria, Cerdas, Berakhlak Mulia! 🦏✨</p>
+            </div>
+        </div>
+    </header>
+
+    <nav>
+        <!-- PROFIL aktif, PPDB menuju index (beranda+form), lainnya placeholder -->
+        <a href="profil.html" class="nav-btn red active">🏰 PROFIL</a>
+        <a href="index.html" class="nav-btn blue">📝 PPDB</a>
+        <a href="#" class="nav-btn green" onclick="alert('Halaman jadwal sedang dalam persiapan. Terima kasih!')">📅 JADWAL</a>
+        <a href="#" class="nav-btn pink" onclick="alert('Halaman laporan & rapor akan hadir segera.')">📩 LAPORAN</a>
+    </nav>
+
+    <main>
+        <!-- Kartu 1: Profil Sekolah & Identitas -->
+        <div class="card">
+            <h2 class="welcome-title">🦏 Tentang TK Badak Putih</h2>
+            <div class="profil-grid">
+                <div class="info-box">
+                    <h3>📌 Identitas</h3>
+                    <p><strong>NPSN:</strong> 69987542</p>
+                    <p><strong>Status:</strong> Swasta Terakreditasi A</p>
+                    <p><strong>Berdiri:</strong> 15 Juli 2005</p>
+                    <p><strong>Yayasan:</strong> Pendidikan Ceria Bangsa</p>
+                    <p><strong>Jam Belajar:</strong> Senin-Jum'at 07.30 - 10.30 WIB</p>
+                </div>
+                <div class="info-box">
+                    <h3>📍 Alamat & Kontak</h3>
+                    <p>🏠 Jl. Kemuning Raya No. 28, Komplek Gading Permai, Kota Pelangi, Jawa Barat</p>
+                    <p>📞 (021) 8876 5432</p>
+                    <p>📱 +62 812 3456 7890 (Admin)</p>
+                    <p>✉️ tkbadakputih@ceria.sch.id</p>
+                    <a href="#" class="btn-kecil" onclick="alert('Alamat: Jl. Kemuning Raya No.28, Kota Pelangi. Buka pukul 07.00-12.00')">📍 Lihat Peta</a>
+                </div>
+                <div class="info-box">
+                    <h3>🏆 Akreditasi & Prestasi</h3>
+                    <p>✓ Akreditasi "A" (Unggul) - BAN PAUD 2024</p>
+                    <p>✓ Juara 1 Lomba Tari Anak Kabupaten 2023</p>
+                    <p>✓ Sekolah Ramah Anak (SRA) Provinsi</p>
+                    <p>✓ Inovasi Pembelajaran Berbasis Alam & Budaya</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartu 2: Visi & Misi (lebih terperinci) -->
+        <div class="card">
+            <h2 class="welcome-title">🌟 Visi & Misi Pendidikan</h2>
+            <div class="visi-misi">
+                <h3>✨ VISI</h3>
+                <p>“Menjadi lembaga PAUD unggulan yang membentuk generasi ceria, cerdas, kreatif, berkarakter mulia, serta cinta lingkungan berlandaskan iman dan budaya luhur.”</p>
+                <h3>📜 MISI</h3>
+                <p>1. Menyelenggarakan pembelajaran aktif, menyenangkan dan berbasis kecerdasan majemuk.</p>
+                <p>2. Menumbuhkan akhlak mulia, kemandirian, serta nilai gotong royong sejak dini.</p>
+                <p>3. Mengembangkan potensi seni, bahasa, dan literasi melalui program unggulan.</p>
+                <p>4. Melibatkan orang tua dan lingkungan dalam ekosistem pendidikan yang harmonis.</p>
+                <p>5. Mempersiapkan siswa yang siap bersaing di jenjang pendidikan dasar.</p>
+            </div>
+        </div>
+
+        <!-- Kartu 3: Fasilitas dan Program Unggulan, guru -->
+        <div class="card">
+            <h2 class="welcome-title">🎨 Fasilitas & Program Unggulan</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 30px; margin: 20px 0;">
+                <div style="flex:1; min-width: 200px;">
+                    <h3 style="color: #e85d04;">🏫 Fasilitas Terbaik</h3>
+                    <div class="fasilitas-list">
+                        <span class="fasilitas-item">🎭 Ruang Bermain Indoor</span>
+                        <span class="fasilitas-item">🌳 Taman Edukasi</span>
+                        <span class="fasilitas-item">📚 Pojok Baca & Literasi</span>
+                        <span class="fasilitas-item">🎨 Ruang Seni & Kreativitas</span>
+                        <span class="fasilitas-item">🏊 Kolam Mandi Bola</span>
+                        <span class="fasilitas-item">🖥️ Laboratorium Komputer Anak</span>
+                        <span class="fasilitas-item">🧸 Area Bermain Outdoor (Ayunan, Perosotan)</span>
+                        <span class="fasilitas-item">🕌 Musholla ramah anak</span>
+                    </div>
+                </div>
+                <div style="flex:1; min-width: 200px;">
+                    <h3 style="color: #e85d04;">✨ Program Unggulan</h3>
+                    <ul style="list-style: none; padding-left: 0;">
+                        <li>🌟 <strong>English Fun Day</strong> - Percakapan dasar interaktif</li>
+                        <li>🌟 <strong>Kebun Mini Badak</strong> - Edukasi tanaman & lingkungan</li>
+                        <li>🌟 <strong>Outdoor Learning</strong> - Eksplorasi alam setiap bulan</li>
+                        <li>🌟 <strong>Sholat & Tahfidz Pendek</strong> - Program keagamaan</li>
+                        <li>🌟 <strong>Cooking Class</strong> - Motorik halus & kemandirian</li>
+                        <li>🌟 <strong>Gedget Smart Parenting</strong> - Workshop orang tua</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; justify-content: space-between; align-items: center;">
+                <div>
+                    <h3>👩‍🏫 Tenaga Pendidik Profesional</h3>
+                    <p>Didukung oleh 12 guru berpengalaman dan berkompeten di bidang PAUD, terlatih metode Montessori dan pendekatan bermain sambil belajar. Rasio guru:siswa ideal 1:8.</p>
+                </div>
+                <div>
+                    <h3>🤝 Kerjasama & Mitra</h3>
+                    <p>UPT Puskesmas Gading, Dinas Pendidikan, Perpustakaan Keliling, dan Komunitas Orang Tua Hebat.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartu 4: Jadwal Kegiatan Reguler & Prestasi -->
+        <div class="card">
+            <h2 class="welcome-title">⏰ Aktivitas Harian & Ekstrakurikuler</h2>
+            <div style="display: flex; flex-wrap: wrap; gap: 20px;">
+                <div style="flex: 1;">
+                    <h3>📆 Contoh Rutinitas (Kelompok B)</h3>
+                    <ul style="margin-left: 20px;">
+                        <li>07.30 - 08.00 : Senam & Ice breaking</li>
+                        <li>08.00 - 08.30 : Kegiatan pembukaan & doa</li>
+                        <li>08.30 - 09.15 : Sentra main peran / sains</li>
+                        <li>09.15 - 09.45 : Makan bekal sehat & bermain bebas</li>
+                        <li>09.45 - 10.15 : Literasi/bercerita & outbound ringan</li>
+                        <li>10.15 - 10.30 : Refleksi & penutupan</li>
+                    </ul>
+                </div>
+                <div style="flex: 1;">
+                    <h3>⚽ Ekstrakurikuler Pilihan</h3>
+                    <ul>
+                        <li>🎵 Tari Tradisional & Modern</li>
+                        <li>🥋 Taekwondo Anak</li>
+                        <li>🎤 Public Speaking / Drama Mini</li>
+                        <li>🧘 Yoga Anak & Mindfulness</li>
+                        <li>🔬 Eksperimen Sains Seru</li>
+                    </ul>
+                    <p style="margin-top: 15px;"><strong>📢 Prestasi Terbaru:</strong> Juara 2 FLS2N Tari Kreatif tingkat Kota, Juara Harapan 1 Lomba mewarnai tingkat provinsi.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartu 5: Kata Kepala Sekolah & Testimoni -->
+        <div class="card">
+            <h2 class="welcome-title">💬 Pesan Kepala Sekolah</h2>
+            <div style="display: flex; gap: 20px; flex-wrap: wrap; align-items: center;">
+                <div style="flex:2">
+                    <p style="font-size: 1.1rem; font-style: italic; background: #fff4e6; padding: 20px; border-radius: 35px;">
+                        “TK Badak Putih hadir sebagai rumah kedua bagi anak-anak. Kami percaya setiap anak memiliki keunikan dan bakat luar biasa. 
+                        Dengan pendekatan kasih sayang, lingkungan bermain yang inspiratif, serta kolaborasi orang tua, 
+                        kami wujudkan generasi ceria yang siap melangkah ke jenjang lebih tinggi. Mari bergabung bersama keluarga besar Badak Putih!” 
+                        <br> — <strong>Ibu Rina Susanti, S.Pd., M.Pd.</strong>
+                    </p>
+                </div>
+                <div style="flex:1; text-align: center;">
+                    <div style="background:#ffd9b5; border-radius: 50%; width: 110px; height: 110px; display: flex; align-items: center; justify-content: center; margin:0 auto; font-size: 4rem;">👩‍🏫</div>
+                    <p><strong>Kepala TK Badak Putih</strong><br>Masa Bhakti 2018-sekarang</p>
+                </div>
+            </div>
+            <hr>
+            <h3>🌟 Kata Orang Tua & Alumni</h3>
+            <div style="display: flex; flex-wrap: wrap; gap: 18px; margin-top: 15px;">
+                <div style="background:#fff1e2; border-radius: 24px; padding: 12px 18px; flex:1;">
+                    <p>⭐️⭐️⭐️⭐️⭐️ “Anak saya sangat senang belajar di TK Badak Putih. Gurunya sabar dan kreatif, fasilitas lengkap. Terima kasih sudah membentuk karakter baik anak saya.” — <strong>Ibu Dewi</strong> (Wali murid Kelas B)</p>
+                </div>
+                <div style="background:#fff1e2; border-radius: 24px; padding: 12px 18px; flex:1;">
+                    <p>⭐️⭐️⭐️⭐️⭐️ “Sekolah ramah anak, banyak kegiatan outdoor. Sekarang adiknya juga daftar di sini. Highly recommended!” — <strong>Pak Andi</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Kartu informasi tambahan tentang PPDB sekilas (bukan form, tapi ajakan) -->
+        <div class="card" style="background: #ffe5ca;">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                <div>
+                    <h2 style="color: #c23b00;">📢 Penerimaan Peserta Didik Baru</h2>
+                    <p>Tahun Ajaran 2026/2027 sudah dibuka! Kuota terbatas untuk Kelompok Bermain (Usia 3-4 th) dan TK A/B (4-6 th).</p>
+                    <p>Informasi lengkap PPDB & formulir klik tombol <strong>📝 PPDB</strong> di menu navigasi.</p>
+                </div>
+                <a href="index.html" class="nav-btn blue" style="box-shadow: 0 5px 0 #1565c0; text-decoration: none;">Daftar Sekarang ➡️</a>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <p>🦏 TK Badak Putih | Membangun Generasi Emas Berkarakter Mulia | 📞 0812-3456-7890 | © 2026 Yayasan Ceria Bangsa</p>
+        <p style="font-size:0.75rem;">Jl. Kemuning Raya No.28, Kota Pelangi, Jawa Barat</p>
+    </footer>
+
+    <!-- Slight fallback untuk image tk.jpeg jika tidak ditemukan, tetap terlihat rapi -->
+    <script>
+        // Memastikan jika gambar tidak load, tidak mengganggu layout
+        document.querySelector('.logo-circle')?.addEventListener('error', function(e) {
+            if(!this.getAttribute('data-fallback')) {
+                this.setAttribute('data-fallback', 'true');
+                this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle fill="%23ffb347" cx="50" cy="50" r="45"/%3E%3Ctext x="50" y="68" font-size="40" text-anchor="middle" fill="white"%3E🦏%3C/text%3E%3C/svg%3E';
+            }
+        });
+        // navigasi sederhana handle active state pada profil (sudah ada class active)
+        // untuk jadwal & laporan sementara alert
+    </script>
+</body>
+</html>
