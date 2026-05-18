@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Admin Utama - TK Badak Putih</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Quicksand', sans-serif; background: #f4f6f9; color: #2d3e50; padding: 30px; }
+        header {
+            background: linear-gradient(135deg, #1565c0, #1e88e5); color: white;
+            padding: 25px 35px; border-radius: 24px; margin-bottom: 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logout-btn { background: #e53935; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 0 #b71c1c; }
+        .card { background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); border: 1px solid #e2e8f0; }
+        h2 { margin-bottom: 20px; color: #1565c0; border-left: 5px solid #1e88e5; padding-left: 12px; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 14px 18px; text-align: left; border-bottom: 1px solid #e2e8f0; }
+        th { background-color: #f8fafc; color: #475569; font-weight: 600; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Panel Utama Administrator ⚙️</h1>
+            <p>Sistem Pengawasan Pusat Data PPDB Baru</p>
+        </div>
+        <a href="/logout" class="logout-btn">🚪 Keluar Sistem</a>
+    </header>
+
+    <div class="card">
+        <h2>📋 Rekap Data Pendaftaran Siswa Baru (PPDB)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Nama Calon Siswa</th>
+                    <th>Nama Orang Tua / Wali</th>
+                    <th>Nomor Handphone</th>
+                    <th>Alamat Rumah Lengkap</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </div>
+</body>
+</html>

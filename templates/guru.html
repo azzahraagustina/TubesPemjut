@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Kerja Guru - TK Badak Putih</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', 'Quicksand', sans-serif; background: #faf8f5; color: #2d3e50; padding: 30px; }
+        header {
+            background: linear-gradient(135deg, #4caf50, #2e7d32); color: white;
+            padding: 25px 35px; border-radius: 24px; margin-bottom: 30px;
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .logout-btn { background: #e53935; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 0 #b71c1c; }
+        .card { background: white; padding: 35px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); max-width: 650px; margin: 0 auto; border: 1px solid #e2e8f0; }
+        h2 { margin-bottom: 25px; color: #2e7d32; border-left: 5px solid #4caf50; padding-left: 12px; }
+        .form-group { margin-bottom: 18px; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
+        input, select, textarea { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #cbd5e1; outline: none; font-family: inherit; font-size: 0.95rem; }
+        input:focus, select:focus, textarea:focus { border-color: #4caf50; }
+        .submit-btn { background: #4caf50; color: white; border: none; padding: 15px; border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; width: 100%; box-shadow: 0 5px 0 #2e7d32; }
+    </style>
+</head>
+<body>
+    <header>
+        <div>
+            <h1>Ruang Kerja Guru Digital 📝</h1>
+            <p>Input Nilai & Ulasan Evaluasi Perkembangan Belajar Murid</p>
+        </div>
+        <a href="/logout" class="logout-btn">🚪 Keluar</a>
+    </header>
+
+    <div class="card">
+        <h2>✍️ Formulir Isian Rapor Digital</h2>
+        <form action="/guru/input_laporan" method="POST">
+            <div class="form-group">
+                <label>Username Akun Orang Tua:</label>
+                <input type="text" name="username_ortu" placeholder="Contoh: hana" required>
+            </div>
+            <div class="form-group">
+                <label>Nama Lengkap Anak Didik:</label>
+                <input type="text" name="nama_anak" placeholder="Contoh: Aisha Farhana" required>
+            </div>
+            <div class="form-group">
+                <label>Nilai Nilai Agama & Moral:</label>
+                <select name="aspek_agama">
+                    <option>Berkembang Sangat Baik (BSB)</option>
+                    <option>Berkembang Sesuai Harapan (BSH)</option>
+                    <option>Mulai Berkembang (MB)</option>
+                    <option>Belum Berkembang (BB)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nilai Fisik Motorik:</label>
+                <select name="aspek_motorik">
+                    <option>Berkembang Sangat Baik (BSB)</option>
+                    <option>Berkembang Sesuai Harapan (BSH)</option>
+                    <option>Mulai Berkembang (MB)</option>
+                    <option>Belum Berkembang (BB)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nilai Kognitif (Berpikir):</label>
+                <select name="aspek_kognitif">
+                    <option>Berkembang Sangat Baik (BSB)</option>
+                    <option>Berkembang Sesuai Harapan (BSH)</option>
+                    <option>Mulai Berkembang (MB)</option>
+                    <option>Belum Berkembang (BB)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Nilai Sosial Emosional:</label>
+                <select name="aspek_sosial">
+                    <option>Berkembang Sangat Baik (BSB)</option>
+                    <option>Berkembang Sesuai Harapan (BSH)</option>
+                    <option>Mulai Berkembang (MB)</option>
+                    <option>Belum Berkembang (BB)</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Catatan Pesan dari Guru:</label>
+                <textarea name="catatan_guru" rows="3" placeholder="Tulis catatan perkembangan kustom ananda disini..." required></textarea>
+            </div>
+            <button type="submit" class="submit-btn">🚀 Terbitkan & Kirim Rapor ke Orang Tua</button>
+        </form>
+    </div>
+</body>
+</html>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TK Badak Putih - Daftar Akun</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', 'Quicksand', system-ui, sans-serif;
+            background: linear-gradient(135deg, #fff9e8 0%, #e8fff2 100%);
+            min-height: 100vh; display: flex; align-items: center; justify-content: center;
+            padding: 20px; position: relative; overflow: hidden;
+        }
+        .shape { position: absolute; border-radius: 50%; z-index: 0; filter: blur(10px); opacity: 0.6; }
+        .shape-1 { width: 300px; height: 300px; background: #e1f7e3; top: -100px; right: -100px; }
+        .shape-2 { width: 250px; height: 250px; background: #fff2cc; bottom: -80px; left: -50px; }
+
+        .register-card {
+            background: rgba(255, 255, 255, 0.95); padding: 40px 40px; border-radius: 32px;
+            box-shadow: 0 20px 40px rgba(45, 62, 80, 0.06); border: 4px solid #ffffff;
+            width: 100%; max-width: 460px; text-align: center; position: relative; z-index: 1;
+        }
+        .avatar-box {
+            width: 90px; height: 90px; background: #4caf50; border-radius: 50%;
+            margin: 0 auto 18px; display: flex; align-items: center; justify-content: center;
+            font-size: 2.8rem; box-shadow: 0 8px 0 #388e3c;
+        }
+        h2 { color: #2d3e50; font-size: 1.75rem; margin-bottom: 6px; font-weight: 700; }
+        .subtitle { color: #7a8b9e; font-size: 0.9rem; margin-bottom: 25px; }
+        .form-group { text-align: left; margin-bottom: 18px; }
+        label { display: block; font-size: 0.85rem; font-weight: 600; color: #4a5d6e; margin-bottom: 6px; padding-left: 6px; }
+        .input-control {
+            width: 100%; padding: 14px 18px; border: 2px solid #e2e8f0; border-radius: 20px;
+            font-size: 0.95rem; color: #2d3e50; outline: none; background-color: #fcfdfa; transition: all 0.3s ease;
+        }
+        .input-control:focus { border-color: #4caf50; box-shadow: 0 0 0 5px rgba(76, 175, 80, 0.12); }
+        
+        .btn-register {
+            width: 100%; padding: 15px; background: #4caf50; color: white; border: none;
+            border-radius: 20px; font-size: 1.1rem; font-weight: 700; cursor: pointer;
+            box-shadow: 0 6px 0 #388e3c; transition: all 0.15s ease; margin-top: 10px;
+        }
+        .btn-register:hover { transform: translateY(2px); box-shadow: 0 4px 0 #388e3c; }
+        .btn-register:active { transform: translateY(6px); box-shadow: 0 0 0 #388e3c; }
+
+        .auth-footer { margin-top: 25px; font-size: 0.9rem; color: #7a8b9e; }
+        .auth-footer a { color: #4caf50; text-decoration: none; font-weight: 700; }
+        .back-link { display: inline-block; margin-top: 15px; color: #9cb2c9; font-size: 0.85rem; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="shape shape-1"></div>
+    <div class="shape shape-2"></div>
+
+    <div class="register-card">
+        <div class="avatar-box">📝</div>
+        <h2>Pendaftaran Akun</h2>
+        <p class="subtitle">Buat akun untuk melihat rapor & perkembangan anak</p>
+
+        <form action="/register" method="POST">
+            <div class="form-group">
+                <label for="nama">Nama Lengkap Wali Murid</label>
+                <input type="text" id="nama" name="nama" class="input-control" placeholder="Contoh: Ayah Rama / Bunda Syafira" required>
+            </div>
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="input-control" placeholder="Buat nama pengguna" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" name="password" class="input-control" placeholder="Minimal 6 karakter" required>
+            </div>
+            <button type="submit" class="btn-register">Daftar Akun Sekarang 🚀</button>
+        </form>
+
+        <div class="auth-footer">
+            Sudah punya akun? <a href="/login">Masuk di sini</a><br>
+            <a href="/" class="back-link">← Kembali ke Beranda Utama</a>
+        </div>
+    </div>
+</body>
+</html>
