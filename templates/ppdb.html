@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>TK Badak Putih - Beranda</title>
+    <title>TK Badak Putih - PPDB</title>
     <style>
         * {
             margin: 0;
@@ -76,6 +76,9 @@
             padding: 5px;
             transition: transform 0.3s ease;
         }
+        .logo-circle:hover {
+            transform: scale(1.02);
+        }
 
         .ribbon-title {
             background: #ffecb3;
@@ -103,6 +106,7 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
+        /* Navigasi Fleksibel Kiri-Kanan */
         nav {
             display: flex;
             flex-wrap: wrap;
@@ -143,6 +147,7 @@
         .nav-btn.blue { background: #42a5f5; color: white; border-bottom: 3px solid #1565c0; }
         .nav-btn.green { background: #66bb6a; color: white; border-bottom: 3px solid #2e7d32; }
         .nav-btn.pink { background: #f48fb1; color: white; border-bottom: 3px solid #c2185b; }
+        
         .nav-btn.auth-btn { background: #2196f3; color: white; border-bottom: 3px solid #1565c0; }
 
         .nav-btn:hover {
@@ -173,7 +178,12 @@
             border-radius: 48px;
             padding: 28px 32px;
             box-shadow: 0 20px 35px rgba(0, 0, 0, 0.1);
+            transition: all 0.25s ease;
             border: 1px solid rgba(255,215,150,0.6);
+        }
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 25px 40px rgba(0, 0, 0, 0.12);
         }
 
         .welcome-title {
@@ -182,46 +192,53 @@
             margin-bottom: 20px;
             position: relative;
             display: inline-block;
-            color: #ff7b5c;
-            border-left: 8px solid #ff7b5c;
+            color: #f57c00;
+            border-left: 8px solid #ffa726;
             padding-left: 20px;
         }
 
-        /* --- GRID GALERI FOTO --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 25px;
-            margin-top: 20px;
+        .form-group {
+            margin-bottom: 18px;
         }
-
-        .gallery-item {
-            background: white;
-            border-radius: 24px;
-            overflow: hidden;
-            box-shadow: 0 8px 15px rgba(0,0,0,0.05);
-            border: 3px solid #ffecc7;
-            transition: transform 0.3s ease;
-        }
-        .gallery-item:hover {
-            transform: scale(1.03) rotate(1deg);
-        }
-
-        .gallery-img {
-            width: 100%;
-            height: 220px;
-            object-fit: cover;
-            display: block;
-        }
-
-        .gallery-caption {
-            padding: 15px;
-            text-align: center;
+        .form-group label {
             font-weight: bold;
+            display: block;
+            margin-bottom: 8px;
+            color: #3a280f;
+        }
+        .form-group input, .form-group textarea, .form-group select {
+            width: 100%;
+            padding: 14px 20px;
+            border-radius: 20px;
+            border: 2px solid #ffcd94;
+            font-family: inherit;
+            font-size: 1rem;
+            transition: 0.2s;
+            background: white;
+        }
+        .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+            outline: none;
+            border-color: #ffa047;
+            box-shadow: 0 0 0 4px rgba(255,160,71,0.15);
+        }
+        .submit-btn {
+            background: #42a5f5;
+            color: white;
+            border: none;
+            padding: 14px 28px;
             font-size: 1.1rem;
-            background: #fffbf2;
-            color: #4a2a0e;
-            border-top: 2px solid #ffecc7;
+            font-weight: bold;
+            border-radius: 60px;
+            cursor: pointer;
+            transition: 0.2s;
+            width: 100%;
+            max-width: 280px;
+            margin-top: 10px;
+            box-shadow: 0 5px 0 #1565c0;
+        }
+        .submit-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.15);
         }
 
         footer {
@@ -258,55 +275,88 @@
     </header>
 
     <nav>
-    <div class="menu-left">
-        <a href="index.html" class="nav-btn red">🏠</a>
-        <a href="profil.html" class="nav-btn red">🏰 PROFIL</a>
-        <a href="ppdb.html" class="nav-btn blue">📝 PPDB</a>
-        <a href="jadwal.html" class="nav-btn green">📅 JADWAL</a>
-        <a href="laporan.html" class="nav-btn pink">📩 LAPORAN</a>
-    </div>
-    
+        <div class="menu-left">
+            <a href="index.html" class="nav-btn red">🏠</a>
+            <a href="profil.html" class="nav-btn red">🏰 PROFIL</a>
+            <a href="ppdb.html" class="nav-btn blue active">📝 PPDB</a>
+            <a href="jadwal.html" class="nav-btn green">📅 JADWAL</a>
+            <a href="laporan.html" class="nav-btn pink">📩 LAPORAN</a>
+        </div>
+
         <div class="auth-zone" id="authZone">
-            <a href="login.html" class="nav-btn auth-btn">🔑 MASUK</a>
+            <a href="/login" class="nav-btn auth-btn">🔑 MASUK</a>
         </div>
     </nav>
 
     <main>
         <div class="card">
-            <h2 class="welcome-title">👋 Selamat Datang di TK Badak Putih</h2>
-            <p style="line-height: 1.6; font-size: 1.1rem;">
-                Tempat terbaik bagi putra-putri Anda untuk bermain, belajar, dan tumbuh menjadi generasi yang ceria, cerdas, dan berakhlak mulia. Kami menerapkan metode pembelajaran interaktif yang menyenangkan dan berfokus pada perkembangan karakter anak.
-            </p>
-        </div>
-
-        <div class="card">
-            <h2 class="welcome-title" style="color: #66bb6a; border-left-color: #66bb6a;">📸 Dokumentasi & Kegiatan Sekolah</h2>
-            <p style="margin-bottom: 15px;">Intip serunya aktivitas belajar dan bermain di lingkungan sekolah kami:</p>
+            <h2 class="welcome-title" style="color: #42a5f5;">📝 Formulir Pendaftaran Siswa Baru (PPDB)</h2>
+            <p style="margin-bottom: 20px; text-align: center;">Tahun Ajaran 2026/2027 | Gelombang I: Januari - Juni 2026</p>
             
-            <div class="gallery-grid">
-    
-            <div class="gallery-item">
-                <img src="static/foto-anak.jpeg" class="gallery-img" alt="Siswa TK Badak Putih">
-                <div class="gallery-caption">👧 Siswa & Siswi Ceria</div>
-            </div>
-
-            <div class="gallery-item">
-                <img src="static/foto-guru.jpeg" class="gallery-img" alt="Guru TK Badak Putih">
-                <div class="gallery-caption">👩‍🏫 Guru Pengajar Kompeten</div>
-            </div>
-
-            <div class="gallery-item">
-                <img src="static/foto-kegiatan.jpeg" class="gallery-img" alt="Kegiatan Sekolah">
-                <div class="gallery-caption">🎨 Aktivitas Kreativitas & Bermain</div>
-            </div>
-
+            <form action="/proses_ppdb" method="POST" style="max-width: 600px; margin: 0 auto;" id="ppdbForm">
+                <div class="form-group">
+                    <label>👧 Nama Lengkap Calon Siswa:</label>
+                    <input type="text" name="nama_anak" required placeholder="Contoh: Aisha Putri Ramadhani">
+                </div>
+                <div class="form-group">
+                    <label>👨‍👩‍👧 Nama Orang Tua / Wali:</label>
+                    <input type="text" name="nama_ortu" required placeholder="Ayah / Ibu / Wali">
+                </div>
+                <div class="form-group">
+                    <label>📞 Nomor HP / WhatsApp Aktif:</label>
+                    <input type="tel" name="no_hp" required placeholder="0812-3456-7890">
+                </div>
+                <div class="form-group">
+                    <label>🏠 Alamat Rumah:</label>
+                    <textarea name="alamat" rows="3" required placeholder="Jalan, RT/RW, Kelurahan, Kecamatan"></textarea>
+                </div>
+                <div class="form-group">
+                    <label>📅 Usia Calon Siswa (pilih):</label>
+                    <select name="usia">
+                        <option>3 - 4 tahun (Kelompok Bermain)</option>
+                        <option>4 - 5 tahun (TK A)</option>
+                        <option>5 - 6 tahun (TK B)</option>
+                    </select>
+                </div>
+                <div style="text-align: center;">
+                    <button type="submit" class="submit-btn">✉️ Kirim Pendaftaran</button>
+                </div>
+                <p style="font-size: 0.8rem; text-align: center; margin-top: 20px;">*Setelah mengirim, panitia akan menghubungi Anda maksimal 2x24 jam untuk verifikasi.</p>
+            </form>
         </div>
 
-            </div> </div> </main>
+        <div class="card" style="background: #ffe5ca;">
+            <div style="display: flex; flex-wrap: wrap; gap: 20px; align-items: center; justify-content: space-between;">
+                <div>
+                    <h3 style="color: #c23b00;">📢 Informasi PPDB</h3>
+                    <p>✔️ Pendaftaran dibuka hingga 30 Juni 2026<br>
+                    ✔️ Jalur reguler & beasiswa prestasi (syarat khusus)<br>
+                    ✔️ Kunjungan sekolah dapat dijadwalkan melalui WhatsApp<br>
+                    ✔️ Tes observasi ringan (bermain & interaksi) akan dijadwalkan setelah pendaftaran</p>
+                </div>
+                <div style="text-align: center;">
+                    <div style="background: #ffb347; border-radius: 60px; padding: 12px 20px; color: white; font-weight: bold;">📞 0812-3456-7890</div>
+                    <p style="margin-top: 8px;">(Admin PPDB)</p>
+                </div>
+            </div>
+        </div>
+    </main>
 
     <footer>
         <p>🦏 TK Badak Putih | Membangun Generasi Emas Berkarakter Mulia | 📞 0812-3456-7890 | © 2026 Yayasan Ceria Bangsa</p>
         <p style="font-size:0.75rem;">Jl. Kemuning Raya No.28, Kota Pelangi, Jawa Barat</p>
     </footer>
+
+    <script>
+        const logoImg = document.querySelector('.logo-circle');
+        if (logoImg) {
+            logoImg.addEventListener('error', function() {
+                if (!this.getAttribute('data-fallback')) {
+                    this.setAttribute('data-fallback', 'true');
+                    this.src = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"%3E%3Ccircle fill="%23ffb347" cx="50" cy="50" r="45"/%3E%3Ctext x="50" y="68" font-size="40" text-anchor="middle" fill="white"%3E🦏%3C/text%3E%3C/svg%3E';
+                }
+            });
+        }
+    </script>
 </body>
 </html>

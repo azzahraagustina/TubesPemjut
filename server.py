@@ -39,9 +39,14 @@ class WebTKHandler(BaseHTTPRequestHandler):
         username_aktif = user_info['username'] if user_info else None
         role_aktif = user_info['role'] if user_info else None
 
-        # Routing halaman utama menggunakan sistem cetakan kiddy asli
+        # --- ROUTING HALAMAN GET ---
         if self.path == '/' or self.path == '/index.html':
             self.kirim_halaman_beranda('templates/index.html', user_aktif, role_aktif)
+        
+        # TAMBAHAN: Rute untuk menampilkan halaman PPDB
+        elif self.path == '/ppdb.html' or self.path == '/templates/ppdb.html':
+            self.kirim_halaman_statis('templates/ppdb.html', user_aktif, role_aktif)
+            
         elif self.path == '/profil.html' or self.path == '/templates/profil.html':
             self.kirim_halaman_statis('templates/profil.html', user_aktif, role_aktif)
         elif self.path == '/jadwal.html' or self.path == '/templates/jadwal.html':
@@ -69,8 +74,18 @@ class WebTKHandler(BaseHTTPRequestHandler):
                 self.send_header('Set-Cookie', c.OutputString())
             self.send_header('Location', '/')
             self.end_headers()
-        elif self.path == '/tk.jpeg':
-            self.tampilkan_file_mentah('tk.jpeg', 'image/jpeg')
+            
+        # TAMBAHAN OLEH SYSTEM: Membaca semua gambar .jpeg (tk.jpeg, foto-anak.jpeg, dll) secara dinamis
+        elif self.path.endswith('.jpeg') or self.path.endswith('.jpg'):
+            # Menghapus tanda '/' di awal path file gambar
+            nama_file_gambar = self.path.lstrip('/')
+            # Jika file ada di folder static, arahkan ke folder static
+            if os.path.exists(f"static/{nama_file_gambar}"):
+                self.tampilkan_file_mentah(f"static/{nama_file_gambar}", 'image/jpeg')
+            elif os.path.exists(nama_file_gambar):
+                self.tampilkan_file_mentah(nama_file_gambar, 'image/jpeg')
+            else:
+                self.send_error(404, "Gambar tidak ditemukan")
         else:
             self.send_error(404, "File tidak ditemukan")
 
