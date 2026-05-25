@@ -7,83 +7,495 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Segoe UI', 'Quicksand', sans-serif; background: #faf8f5; color: #2d3e50; padding: 30px; }
+
         header {
             background: linear-gradient(135deg, #4caf50, #2e7d32); color: white;
             padding: 25px 35px; border-radius: 24px; margin-bottom: 30px;
             display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 12px;
         }
-        .logout-btn { background: #e53935; color: white; padding: 10px 20px; border-radius: 50px; text-decoration: none; font-weight: bold; box-shadow: 0 4px 0 #b71c1c; }
-        .card { background: white; padding: 35px; border-radius: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.02); max-width: 650px; margin: 0 auto; border: 1px solid #e2e8f0; }
-        h2 { margin-bottom: 25px; color: #2e7d32; border-left: 5px solid #4caf50; padding-left: 12px; }
-        .form-group { margin-bottom: 18px; }
-        label { display: block; font-weight: 600; margin-bottom: 8px; font-size: 0.9rem; }
-        input, select, textarea { width: 100%; padding: 12px 16px; border-radius: 12px; border: 2px solid #cbd5e1; outline: none; font-family: inherit; font-size: 0.95rem; }
-        input:focus, select:focus, textarea:focus { border-color: #4caf50; }
-        .submit-btn { background: #4caf50; color: white; border: none; padding: 15px; border-radius: 14px; font-weight: bold; font-size: 1rem; cursor: pointer; width: 100%; box-shadow: 0 5px 0 #2e7d32; }
+        header h1 { font-size: 1.5rem; }
+        header p { font-size: 0.9rem; opacity: 0.85; margin-top: 4px; }
+
+        .logout-btn {
+            background: #e53935; color: white; padding: 10px 20px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            box-shadow: 0 4px 0 #b71c1c; white-space: nowrap;
+        }
+
+        .tab-bar {
+            display: flex; gap: 10px; margin-bottom: 25px; flex-wrap: wrap;
+        }
+        .tab-btn {
+            padding: 10px 22px; border-radius: 50px; border: none;
+            font-family: inherit; font-size: 0.95rem; font-weight: 700;
+            cursor: pointer; transition: 0.2s; box-shadow: 0 4px 0 rgba(0,0,0,0.1);
+        }
+        .tab-btn.active { background: #4caf50; color: white; box-shadow: 0 4px 0 #2e7d32; }
+        .tab-btn:not(.active) { background: white; color: #555; }
+        .tab-btn:hover:not(.active) { background: #f0f0f0; }
+
+        .tab-panel { display: none; }
+        .tab-panel.active { display: block; }
+
+        .card {
+            background: white; padding: 32px; border-radius: 24px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.05); max-width: 780px;
+            margin: 0 auto; border: 1px solid #e2e8f0;
+        }
+        .card-wide { max-width: 900px; }
+
+        h2 {
+            margin-bottom: 22px; color: #2e7d32;
+            border-left: 5px solid #4caf50; padding-left: 12px; font-size: 1.2rem;
+        }
+
+        .form-group { margin-bottom: 16px; }
+        label { display: block; font-weight: 600; margin-bottom: 6px; font-size: 0.88rem; color: #444; }
+        input, select, textarea {
+            width: 100%; padding: 11px 14px; border-radius: 12px;
+            border: 2px solid #cbd5e1; outline: none;
+            font-family: inherit; font-size: 0.93rem; transition: border-color 0.2s;
+            background: #fafafa;
+        }
+        input:focus, select:focus, textarea:focus { border-color: #4caf50; background: white; }
+        textarea { resize: vertical; min-height: 80px; }
+
+        .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        @media (max-width: 600px) { .row-2 { grid-template-columns: 1fr; } }
+
+        .section-divider {
+            margin: 24px 0 18px;
+            font-weight: 800; font-size: 1rem;
+            color: white; background: #4caf50;
+            padding: 10px 18px; border-radius: 12px;
+            display: flex; align-items: center; gap: 8px;
+        }
+
+        .karakter-row {
+            display: grid; grid-template-columns: 1fr auto;
+            gap: 12px; align-items: center;
+            padding: 10px 14px; border-radius: 12px;
+            border: 1px solid #e2e8f0; margin-bottom: 8px;
+            background: #fafff8;
+        }
+        .karakter-row label { margin-bottom: 0; font-size: 0.87rem; }
+        .karakter-row select { width: 130px; padding: 7px 10px; font-size: 0.85rem; }
+
+        .submit-btn {
+            background: #4caf50; color: white; border: none;
+            padding: 14px; border-radius: 14px; font-weight: bold;
+            font-size: 1rem; cursor: pointer; width: 100%;
+            box-shadow: 0 5px 0 #2e7d32; transition: 0.15s;
+            margin-top: 8px;
+        }
+        .submit-btn:hover { background: #43a047; transform: translateY(-1px); }
+        .submit-btn:active { transform: translateY(2px); box-shadow: 0 2px 0 #2e7d32; }
+
+        /* Toast */
+        .toast {
+            position: fixed; bottom: 30px; right: 30px;
+            background: #2e7d32; color: white;
+            padding: 14px 22px; border-radius: 50px;
+            font-weight: bold; box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            opacity: 0; transform: translateY(20px);
+            transition: 0.3s; pointer-events: none; z-index: 99;
+        }
+        .toast.show { opacity: 1; transform: translateY(0); }
+
+        /* Daftar Laporan */
+        .laporan-list { display: flex; flex-direction: column; gap: 12px; }
+        .laporan-item {
+            background: #fafff8; border: 1px solid #c8e6c9;
+            border-radius: 16px; padding: 16px 20px;
+            display: flex; justify-content: space-between; align-items: center;
+            flex-wrap: wrap; gap: 10px;
+        }
+        .laporan-item h4 { color: #2e7d32; margin-bottom: 4px; }
+        .laporan-item p { font-size: 0.85rem; color: #666; }
+        .btn-hapus {
+            background: #ffebee; color: #c62828; border: none;
+            padding: 7px 16px; border-radius: 50px;
+            font-size: 0.85rem; font-weight: bold; cursor: pointer;
+            transition: 0.2s; font-family: inherit;
+        }
+        .btn-hapus:hover { background: #ffcdd2; }
+        .empty-state {
+            text-align: center; padding: 40px; color: #aaa; font-size: 1rem;
+        }
+
+        .badge-sm { display: inline-block; background: #e8f5e9; color: #2e7d32; padding: 2px 10px; border-radius: 50px; font-size: 0.8rem; font-weight: bold; margin-left: 6px; }
     </style>
 </head>
 <body>
     <header>
         <div>
-            <h1>Ruang Kerja Guru Digital 📝</h1>
-            <p>Input Nilai & Ulasan Evaluasi Perkembangan Belajar Murid</p>
+            <h1>📝 Ruang Kerja Guru Digital</h1>
+            <p>Input Laporan Perkembangan & Rapor Murid — TK Badak Putih</p>
         </div>
         <a href="/logout" class="logout-btn">🚪 Keluar</a>
     </header>
 
-    <div class="card">
-        <h2>✍️ Formulir Isian Rapor Digital</h2>
-        <form action="/guru/input_laporan" method="POST">
-            <div class="form-group">
-                <label>Username Akun Orang Tua:</label>
-                <input type="text" name="username_ortu" placeholder="Contoh: hana" required>
-            </div>
-            <div class="form-group">
-                <label>Nama Lengkap Anak Didik:</label>
-                <input type="text" name="nama_anak" placeholder="Contoh: Aisha Farhana" required>
-            </div>
-            <div class="form-group">
-                <label>Nilai Nilai Agama & Moral:</label>
-                <select name="aspek_agama">
-                    <option>Berkembang Sangat Baik (BSB)</option>
-                    <option>Berkembang Sesuai Harapan (BSH)</option>
-                    <option>Mulai Berkembang (MB)</option>
-                    <option>Belum Berkembang (BB)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Nilai Fisik Motorik:</label>
-                <select name="aspek_motorik">
-                    <option>Berkembang Sangat Baik (BSB)</option>
-                    <option>Berkembang Sesuai Harapan (BSH)</option>
-                    <option>Mulai Berkembang (MB)</option>
-                    <option>Belum Berkembang (BB)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Nilai Kognitif (Berpikir):</label>
-                <select name="aspek_kognitif">
-                    <option>Berkembang Sangat Baik (BSB)</option>
-                    <option>Berkembang Sesuai Harapan (BSH)</option>
-                    <option>Mulai Berkembang (MB)</option>
-                    <option>Belum Berkembang (BB)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Nilai Sosial Emosional:</label>
-                <select name="aspek_sosial">
-                    <option>Berkembang Sangat Baik (BSB)</option>
-                    <option>Berkembang Sesuai Harapan (BSH)</option>
-                    <option>Mulai Berkembang (MB)</option>
-                    <option>Belum Berkembang (BB)</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label>Catatan Pesan dari Guru:</label>
-                <textarea name="catatan_guru" rows="3" placeholder="Tulis catatan perkembangan kustom ananda disini..." required></textarea>
-            </div>
-            <button type="submit" class="submit-btn">🚀 Terbitkan & Kirim Rapor ke Orang Tua</button>
-        </form>
+    <div class="tab-bar">
+        <button class="tab-btn active" onclick="switchTab('tab-input')">✍️ Input Laporan</button>
+        <button class="tab-btn" onclick="switchTab('tab-daftar')">📋 Daftar Laporan</button>
+        <button class="tab-btn" onclick="switchTab('tab-nilai')">🏷️ Kirim Nilai Cepat</button>
     </div>
+
+    <!-- ======== TAB 1: INPUT LAPORAN LENGKAP ======== -->
+    <div id="tab-input" class="tab-panel active">
+        <div class="card card-wide">
+            <h2>📄 Formulir Laporan Perkembangan Lengkap</h2>
+
+            <div class="section-divider">👤 Data Identitas Murid</div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Nama Lengkap Anak Didik</label>
+                    <input type="text" id="inp_nama" placeholder="Contoh: Aisha Farhana" required>
+                </div>
+                <div class="form-group">
+                    <label>Kelas</label>
+                    <select id="inp_kelas">
+                        <option>TK A</option>
+                        <option>TK B</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Semester / Tahun Ajaran</label>
+                    <input type="text" id="inp_semester" placeholder="I / 2024-2025">
+                </div>
+                <div class="form-group">
+                    <label>Fase</label>
+                    <select id="inp_fase">
+                        <option>Fondasi</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Tinggi Badan (cm)</label>
+                    <input type="number" id="inp_tb" placeholder="110">
+                </div>
+                <div class="form-group">
+                    <label>Berat Badan (kg)</label>
+                    <input type="number" id="inp_bb" placeholder="20">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Nama Guru Kelas</label>
+                <input type="text" id="inp_guru" placeholder="Contoh: Ibu Rina, S.Pd">
+            </div>
+
+            <div class="section-divider">📖 Narasi Perkembangan Per Aspek</div>
+            <div class="form-group">
+                <label>🕌 Nilai Agama dan Moral</label>
+                <textarea id="inp_agama" placeholder="Tuliskan narasi perkembangan aspek agama & moral anak..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>⭐ Karakter Siswa (Narasi)</label>
+                <textarea id="inp_karakter_narasi" placeholder="Tuliskan narasi perkembangan karakter anak..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>🏃 Fisik Motorik</label>
+                <textarea id="inp_fisik" placeholder="Tuliskan narasi perkembangan fisik motorik anak..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>🧠 Kognitif</label>
+                <textarea id="inp_kognitif" placeholder="Tuliskan narasi perkembangan kognitif / berpikir anak..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>📚 Bahasa dan Literasi</label>
+                <textarea id="inp_bahasa" placeholder="Tuliskan narasi perkembangan bahasa anak..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>🤝 Sosial Emosional</label>
+                <textarea id="inp_sosem" placeholder="Tuliskan narasi perkembangan sosial emosional anak..."></textarea>
+            </div>
+            <div class="form-group">
+                <label>🎨 Seni dan Kreativitas</label>
+                <textarea id="inp_seni" placeholder="Tuliskan narasi perkembangan seni anak..."></textarea>
+            </div>
+
+            <div class="section-divider">⭐ Capaian Karakter Siswa</div>
+            <p style="font-size:0.85rem;color:#777;margin-bottom:14px;">SM = Sudah Muncul &nbsp;|&nbsp; MM = Mulai Muncul &nbsp;|&nbsp; BM = Belum Muncul</p>
+            <div id="karakter_rows">
+                <div class="karakter-row">
+                    <label>Mandiri, disiplin dan tanggung jawab</label>
+                    <select><option>SM</option><option>MM</option><option>BM</option></select>
+                </div>
+                <div class="karakter-row">
+                    <label>Dermawan, suka menolong dan kerjasama</label>
+                    <select><option>SM</option><option>MM</option><option>BM</option></select>
+                </div>
+                <div class="karakter-row">
+                    <label>Percaya diri, kreatif, dan pantang menyerah</label>
+                    <select><option>SM</option><option>MM</option><option>BM</option></select>
+                </div>
+                <div class="karakter-row">
+                    <label>Pemimpin yang baik dan adil</label>
+                    <select><option>SM</option><option>MM</option><option>BM</option></select>
+                </div>
+                <div class="karakter-row">
+                    <label>Kebersihan, kerapian, kesehatan dan keamanan</label>
+                    <select><option>SM</option><option>MM</option><option>BM</option></select>
+                </div>
+            </div>
+
+            <div class="section-divider">🏥 Tumbuh Kembang & Kesehatan</div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Penglihatan (Mata)</label>
+                    <select id="inp_mata"><option>Baik</option><option>Kurang Baik</option><option>Perlu Pemeriksaan</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Pendengaran (Telinga)</label>
+                    <select id="inp_telinga"><option>Baik</option><option>Kurang Baik</option><option>Perlu Pemeriksaan</option></select>
+                </div>
+            </div>
+            <div class="row-2">
+                <div class="form-group">
+                    <label>Kesehatan Mulut dan Gigi</label>
+                    <select id="inp_gigi"><option>Baik</option><option>Kurang Baik</option><option>Perlu Pemeriksaan</option></select>
+                </div>
+                <div class="form-group">
+                    <label>Kerapian dalam Berpakaian</label>
+                    <select id="inp_rapian"><option>Sangat Baik</option><option>Baik</option><option>Cukup Baik</option><option>Perlu Bimbingan</option></select>
+                </div>
+            </div>
+
+            <div class="section-divider">📝 Catatan Guru</div>
+            <div class="form-group">
+                <textarea id="inp_catatan" rows="4" placeholder="Tulis catatan perkembangan dan pesan untuk orang tua..."></textarea>
+            </div>
+
+            <button class="submit-btn" onclick="simpanLaporan()">💾 Simpan Laporan ke Sistem</button>
+        </div>
+    </div>
+
+    <!-- ======== TAB 2: DAFTAR LAPORAN ======== -->
+    <div id="tab-daftar" class="tab-panel">
+        <div class="card card-wide">
+            <h2>📋 Daftar Laporan Tersimpan</h2>
+            <div id="daftar_container">
+                <div class="empty-state">🦏 Belum ada laporan tersimpan</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ======== TAB 3: NILAI CEPAT (FORM ASLI) ======== -->
+    <div id="tab-nilai" class="tab-panel">
+        <div class="card">
+            <h2>🏷️ Kirim Nilai Cepat ke Orang Tua</h2>
+            <form action="/guru/input_laporan" method="POST">
+                <div class="form-group">
+                    <label>Username Akun Orang Tua</label>
+                    <input type="text" name="username_ortu" placeholder="Contoh: hana" required>
+                </div>
+                <div class="form-group">
+                    <label>Nama Lengkap Anak Didik</label>
+                    <input type="text" name="nama_anak" placeholder="Contoh: Aisha Farhana" required>
+                </div>
+                <div class="form-group">
+                    <label>Nilai Agama & Moral</label>
+                    <select name="aspek_agama">
+                        <option>Berkembang Sangat Baik (BSB)</option>
+                        <option>Berkembang Sesuai Harapan (BSH)</option>
+                        <option>Mulai Berkembang (MB)</option>
+                        <option>Belum Berkembang (BB)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nilai Fisik Motorik</label>
+                    <select name="aspek_motorik">
+                        <option>Berkembang Sangat Baik (BSB)</option>
+                        <option>Berkembang Sesuai Harapan (BSH)</option>
+                        <option>Mulai Berkembang (MB)</option>
+                        <option>Belum Berkembang (BB)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nilai Kognitif</label>
+                    <select name="aspek_kognitif">
+                        <option>Berkembang Sangat Baik (BSB)</option>
+                        <option>Berkembang Sesuai Harapan (BSH)</option>
+                        <option>Mulai Berkembang (MB)</option>
+                        <option>Belum Berkembang (BB)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Nilai Sosial Emosional</label>
+                    <select name="aspek_sosial">
+                        <option>Berkembang Sangat Baik (BSB)</option>
+                        <option>Berkembang Sesuai Harapan (BSH)</option>
+                        <option>Mulai Berkembang (MB)</option>
+                        <option>Belum Berkembang (BB)</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Catatan Pesan dari Guru</label>
+                    <textarea name="catatan_guru" rows="3" placeholder="Tulis catatan kustom..." required></textarea>
+                </div>
+                <button type="submit" class="submit-btn">🚀 Terbitkan & Kirim ke Orang Tua</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">✅ Laporan berhasil disimpan!</div>
+
+<script>
+function switchTab(id) {
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+    const idx = ['tab-input','tab-daftar','tab-nilai'].indexOf(id);
+    document.querySelectorAll('.tab-btn')[idx].classList.add('active');
+    if (id === 'tab-daftar') renderDaftar();
+}
+
+function showToast(msg, ok) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.style.background = ok === false ? '#c62828' : '#2e7d32';
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+function getKarakterRows() {
+    const rows = document.querySelectorAll('#karakter_rows .karakter-row');
+    return Array.from(rows).map(r => ({
+        bidang: r.querySelector('label').textContent.trim(),
+        capaian: r.querySelector('select').value
+    }));
+}
+
+function simpanLaporan() {
+    const nama = document.getElementById('inp_nama').value.trim();
+    if (!nama) { showToast('⚠️ Nama anak wajib diisi!', false); return; }
+
+    const data = {
+        nama,
+        kelas:      document.getElementById('inp_kelas').value,
+        semester:   document.getElementById('inp_semester').value,
+        fase:       document.getElementById('inp_fase').value,
+        tb:         document.getElementById('inp_tb').value,
+        bb:         document.getElementById('inp_bb').value,
+        guru:       document.getElementById('inp_guru').value,
+        agama:      document.getElementById('inp_agama').value,
+        karakter_narasi: document.getElementById('inp_karakter_narasi').value,
+        fisik:      document.getElementById('inp_fisik').value,
+        kognitif:   document.getElementById('inp_kognitif').value,
+        bahasa:     document.getElementById('inp_bahasa').value,
+        sosem:      document.getElementById('inp_sosem').value,
+        seni:       document.getElementById('inp_seni').value,
+        karakter_capaian: getKarakterRows(),
+        mata:       document.getElementById('inp_mata').value,
+        telinga:    document.getElementById('inp_telinga').value,
+        gigi:       document.getElementById('inp_gigi').value,
+        rapian:     document.getElementById('inp_rapian').value,
+        catatan:    document.getElementById('inp_catatan').value,
+        tanggal:    new Date().toLocaleDateString('id-ID', {year:'numeric',month:'long',day:'numeric'})
+    };
+
+    // Simpan laporan
+    const lKey = 'laporan_' + nama.replace(/\s+/g,'_').toLowerCase();
+    localStorage.setItem(lKey, JSON.stringify(data));
+
+    // Daftarkan ke daftar_murid
+    let murid = [];
+    try { murid = JSON.parse(localStorage.getItem('daftar_murid') || '[]'); } catch {}
+    const sudahAda = murid.find(m => m.nama.toLowerCase() === nama.toLowerCase());
+    if (!sudahAda) {
+        murid.push({ id: Date.now().toString(), nama, kelas: data.kelas });
+        localStorage.setItem('daftar_murid', JSON.stringify(murid));
+    }
+
+    showToast('✅ Laporan ' + nama + ' berhasil disimpan!');
+}
+
+function renderDaftar() {
+    const container = document.getElementById('daftar_container');
+    let murid = [];
+    try { murid = JSON.parse(localStorage.getItem('daftar_murid') || '[]'); } catch {}
+
+    const punya = murid.filter(m => {
+        const k = 'laporan_' + m.nama.replace(/\s+/g,'_').toLowerCase();
+        return !!localStorage.getItem(k);
+    });
+
+    if (!punya.length) {
+        container.innerHTML = '<div class="empty-state">🦏 Belum ada laporan tersimpan</div>';
+        return;
+    }
+
+    container.innerHTML = '<div class="laporan-list">' + punya.map(m => {
+        const k = 'laporan_' + m.nama.replace(/\s+/g,'_').toLowerCase();
+        let lap = null;
+        try { lap = JSON.parse(localStorage.getItem(k)); } catch {}
+        return `
+        <div class="laporan-item">
+            <div>
+                <h4>👧 ${m.nama} <span class="badge-sm">${m.kelas}</span></h4>
+                <p>📅 ${lap ? lap.tanggal : '-'} &nbsp;|&nbsp; Semester: ${lap ? lap.semester : '-'}</p>
+            </div>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+                <button class="btn-hapus" onclick="editLaporan('${m.id}','${m.nama.replace(/'/g,"\\'")}')">✏️ Edit</button>
+                <button class="btn-hapus" style="background:#fff3e0;color:#e65100;" onclick="hapusLaporan('${m.id}','${m.nama.replace(/'/g,"\\'")}')">🗑️ Hapus</button>
+            </div>
+        </div>`;
+    }).join('') + '</div>';
+}
+
+function hapusLaporan(id, nama) {
+    if (!confirm('Hapus laporan untuk ' + nama + '?')) return;
+    const lKey = 'laporan_' + nama.replace(/\s+/g,'_').toLowerCase();
+    localStorage.removeItem(lKey);
+    let murid = [];
+    try { murid = JSON.parse(localStorage.getItem('daftar_murid') || '[]'); } catch {}
+    murid = murid.filter(m => m.id !== id);
+    localStorage.setItem('daftar_murid', JSON.stringify(murid));
+    renderDaftar();
+    showToast('🗑️ Laporan ' + nama + ' dihapus');
+}
+
+function editLaporan(id, nama) {
+    const lKey = 'laporan_' + nama.replace(/\s+/g,'_').toLowerCase();
+    let lap = null;
+    try { lap = JSON.parse(localStorage.getItem(lKey)); } catch {}
+    if (!lap) return;
+
+    document.getElementById('inp_nama').value = lap.nama || '';
+    document.getElementById('inp_kelas').value = lap.kelas || 'TK A';
+    document.getElementById('inp_semester').value = lap.semester || '';
+    document.getElementById('inp_fase').value = lap.fase || 'Fondasi';
+    document.getElementById('inp_tb').value = lap.tb || '';
+    document.getElementById('inp_bb').value = lap.bb || '';
+    document.getElementById('inp_guru').value = lap.guru || '';
+    document.getElementById('inp_agama').value = lap.agama || '';
+    document.getElementById('inp_karakter_narasi').value = lap.karakter_narasi || '';
+    document.getElementById('inp_fisik').value = lap.fisik || '';
+    document.getElementById('inp_kognitif').value = lap.kognitif || '';
+    document.getElementById('inp_bahasa').value = lap.bahasa || '';
+    document.getElementById('inp_sosem').value = lap.sosem || '';
+    document.getElementById('inp_seni').value = lap.seni || '';
+    document.getElementById('inp_mata').value = lap.mata || 'Baik';
+    document.getElementById('inp_telinga').value = lap.telinga || 'Baik';
+    document.getElementById('inp_gigi').value = lap.gigi || 'Baik';
+    document.getElementById('inp_rapian').value = lap.rapian || 'Baik';
+    document.getElementById('inp_catatan').value = lap.catatan || '';
+
+    if (lap.karakter_capaian) {
+        const rows = document.querySelectorAll('#karakter_rows .karakter-row');
+        lap.karakter_capaian.forEach((kc, i) => {
+            if (rows[i]) rows[i].querySelector('select').value = kc.capaian;
+        });
+    }
+
+    switchTab('tab-input');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    showToast('📂 Data laporan dimuat, siap diedit');
+}
+</script>
 </body>
 </html>
