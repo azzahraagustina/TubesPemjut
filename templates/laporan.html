@@ -20,7 +20,6 @@
         .circle-1 { width: 280px; height: 280px; top: -80px; left: -60px; background: radial-gradient(circle, #ffe6b3, #ffd27a); opacity: 0.4; }
         .circle-2 { width: 380px; height: 380px; bottom: -100px; right: -80px; background: radial-gradient(circle, #b9e3ff, #7fc9ff); opacity: 0.25; }
 
-        /* ===== HEADER (sama persis index) ===== */
         header {
             position: relative; overflow: hidden;
             background: linear-gradient(135deg, #ffb347, #ff8c42);
@@ -50,7 +49,6 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
 
-        /* ===== NAV (sama persis index) ===== */
         nav {
             display: flex; flex-wrap: wrap;
             justify-content: space-between; align-items: center;
@@ -79,7 +77,6 @@
             filter: brightness(1.05);
         }
 
-        /* ===== AUTH ZONE (sama persis index) ===== */
         .auth-zone { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
         .user-chip {
             display: none; align-items: center; gap: 8px;
@@ -96,7 +93,6 @@
         .btn-masuk  { background: #2196f3; color: white; box-shadow: 0 6px 0 #1565c0; }
         .btn-logout { background: #ef5350; color: white; box-shadow: 0 6px 0 #b71c1c; display: none; }
 
-        /* Modal logout */
         .modal-overlay { display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.45); z-index: 999; align-items: center; justify-content: center; }
         .modal-overlay.show { display: flex; }
         .modal-box {
@@ -112,7 +108,6 @@
         .modal-actions { display: flex; gap: 12px; justify-content: center; }
         .modal-actions .nav-btn { padding: 10px 28px; font-size: 1rem; }
 
-        /* ===== MAIN ===== */
         main {
             max-width: 1300px; margin: 20px auto;
             padding: 0 25px 40px;
@@ -133,7 +128,6 @@
             display: inline-block;
         }
 
-        /* Filter */
         .filter-box {
             background: #fff4e6; border-radius: 60px;
             padding: 15px 25px;
@@ -154,7 +148,6 @@
         }
         .btn-tampil:hover { background: #f06292; transform: translateY(-2px); }
 
-        /* ===== RAPOR NARASI ===== */
         .rapor-wrap {
             background: white; border-radius: 36px; overflow: hidden;
             box-shadow: 0 10px 30px rgba(0,0,0,0.07);
@@ -253,7 +246,6 @@
     <div class="decor-circle circle-1"></div>
     <div class="decor-circle circle-2"></div>
 
-    <!-- Modal Logout -->
     <div class="modal-overlay" id="logoutModal">
         <div class="modal-box">
             <div class="modal-icon">👋</div>
@@ -261,7 +253,7 @@
             <p class="modal-desc">Yakin ingin keluar dari akun Anda? Sampai jumpa lagi! 🦏</p>
             <div class="modal-actions">
                 <button class="nav-btn green" onclick="closeModal()">Batal</button>
-                <button class="nav-btn" style="background:#ef5350;color:white;box-shadow:0 6px 0 #b71c1c;display:inline-flex;" onclick="doLogout()">Ya, Keluar</button>
+                <button class="nav-btn" style="background:#ef5350;color:white;box-shadow:0 6px 0 #b71c1c;" onclick="doLogout()">Ya, Keluar</button>
             </div>
         </div>
     </div>
@@ -279,18 +271,18 @@
 
     <nav>
         <div class="menu-left">
-            <a href="index.html" class="nav-btn red">🏠</a>
-            <a href="profil.html" class="nav-btn red">🏰 PROFIL</a>
-            <a href="ppdb.html" class="nav-btn blue">📝 PPDB</a>
-            <a href="jadwal.html" class="nav-btn green">📅 JADWAL</a>
-            <a href="laporan.html" class="nav-btn pink active">📩 LAPORAN</a>
+            <a href="/index.html" class="nav-btn red">🏠</a>
+            <a href="/profil.html" class="nav-btn red">🏰 PROFIL</a>
+            <a href="/ppdb.html" class="nav-btn blue">📝 PPDB</a>
+            <a href="/jadwal.html" class="nav-btn green">📅 JADWAL</a>
+            <a href="/laporan.html" class="nav-btn pink active">📩 LAPORAN</a>
         </div>
         <div class="auth-zone" id="authZone">
             <div class="user-chip" id="userChip">
                 <div class="uavatar">👤</div>
                 <span id="userNameLabel">Pengguna</span>
             </div>
-            <a href="login.html" class="nav-btn btn-masuk" id="btnMasuk">🔑 MASUK</a>
+            <a href="/login" class="nav-btn btn-masuk" id="btnMasuk">🔑 MASUK</a>
             <button class="nav-btn btn-logout" id="btnLogout" onclick="openModal()">🚪 KELUAR</button>
         </div>
     </nav>
@@ -302,9 +294,7 @@
 
             <div class="filter-box">
                 <label>👧 Pilih Nama Siswa:</label>
-                <select id="studentSelect" class="student-select">
-                    <!-- diisi JS dari localStorage + data bawaan -->
-                </select>
+                <select id="studentSelect" class="student-select"></select>
                 <button id="btnTampil" class="btn-tampil">📄 Tampilkan Rapor</button>
             </div>
             <div id="raporContainer">
@@ -339,8 +329,7 @@
         <p>🦏 TK Badak Putih | Laporan Perkembangan Anak Didik | 📞 0812-3456-7890 | © 2026 Yayasan Ceria Bangsa</p>
         <p style="font-size:0.75rem;">Jl. Arramannik Endah No.3 RT.001 RW.009, Kel. Sukamiskin, Kec. Arcamanik, Bandung 40293</p>
     </footer>
-
-<script>
+    <script>
 const dataSiswa = {
     Akleema: {
         nama:"Akleema Berlian Nur Haqqi", kelas:"TK A", fase:"Fondasi",
@@ -362,12 +351,9 @@ const dataSiswa = {
             { bidang:"Kebersihan, kerapian, kesehatan dan keamanan", capaian:"SM" }
         ],
         kesehatan:[
-            { aspek:"Penglihatan (Mata)", ket:"Baik" },
-            { aspek:"Pendengaran (Telinga)", ket:"Baik" },
-            { aspek:"Kesehatan Mulut dan Gigi", ket:"Baik" },
-            { aspek:"Kerapian dalam Berpakaian", ket:"Baik" },
-            { aspek:"Berat Badan", ket:"21 Kg" },
-            { aspek:"Tinggi Badan", ket:"112 Cm" }
+            { aspek:"Penglihatan (Mata)", ket:"Baik" }, { aspek:"Pendengaran (Telinga)", ket:"Baik" },
+            { aspek:"Kesehatan Mulut dan Gigi", ket:"Baik" }, { aspek:"Kerapian dalam Berpakaian", ket:"Baik" },
+            { aspek:"Berat Badan", ket:"21 Kg" }, { aspek:"Tinggi Badan", ket:"112 Cm" }
         ],
         catatan:"Akleema adalah anak yang aktif dan bersemangat. Teruskan kebiasaan baik membawa bekal sehat dan rajin berdoa. Orang tua diharapkan mendampingi hafalan surat-surat pendek di rumah agar semakin lancar. Akleema memiliki potensi yang luar biasa, terus semangat! 💪🦏"
     },
@@ -455,7 +441,8 @@ const badgeCls = { SM:"badge-sm", MM:"badge-mm", BM:"badge-bm" };
 const badgeTxt = { SM:"Sudah Muncul (SM)", MM:"Mulai Muncul (MM)", BM:"Belum Muncul (BM)" };
 
 function renderRapor(key) {
-    const s = getDataSiswaByKey(key); if (!s) return;
+    const s = dataSiswa[key];
+    if (!s) return;
     const c = document.getElementById('raporContainer');
 
     const aspekHTML = s.aspek.map(a => `
@@ -465,10 +452,9 @@ function renderRapor(key) {
         </div>`).join('');
 
     const karakterHTML = s.karakter.map(k => `
-        <tr>
-            <td>${k.bidang}</td>
-            <td style="text-align:center;"><span class="capaian-badge ${badgeCls[k.capaian]}">${k.capaian}</span></td>
-            <td>${badgeTxt[k.capaian]}</td>
+        <tr><td style="padding:9px 12px;border:1px solid #e8f5e9;">${k.bidang}</td>
+        <td style="text-align:center;"><span class="capaian-badge ${badgeCls[k.capaian]}">${k.capaian}</span></td>
+        <td>${badgeTxt[k.capaian]}</td>
         </tr>`).join('');
 
     const kesehatanHTML = s.kesehatan.map((k,i) =>
@@ -533,14 +519,11 @@ function renderRapor(key) {
     </div>`;
 }
 
-// Murid bawaan (hardcoded)
 const muridBawaan = ['Akleema','Bima','Cinta','Dion'];
 
 function populateDropdown() {
     const sel = document.getElementById('studentSelect');
     sel.innerHTML = '';
-
-    // 1. Murid bawaan (ada di dataSiswa)
     muridBawaan.forEach(k => {
         const s = dataSiswa[k];
         if (!s) return;
@@ -549,102 +532,61 @@ function populateDropdown() {
         opt.textContent = `${s.nama} (${s.kelas})`;
         sel.appendChild(opt);
     });
-
-    // 2. Murid tambahan dari localStorage (diinput guru)
-    try {
-        const extras = JSON.parse(localStorage.getItem('daftar_murid') || '[]');
-        extras.forEach(m => {
-            // Cek apakah ada laporan tersimpan untuk murid ini
-            const key = 'laporan_' + m.nama.replace(/\s+/g,'_').toLowerCase();
-            const laporan = localStorage.getItem(key);
-            if (!laporan) return; // hanya tampilkan kalau sudah ada laporan
-
-            const opt = document.createElement('option');
-            opt.value = 'extra_' + m.id;
-            opt.textContent = `${m.nama} (${m.kelas})`;
-            sel.appendChild(opt);
-        });
-    } catch {}
-}
-
-function getDataSiswaByKey(key) {
-    // Murid bawaan
-    if (dataSiswa[key]) return dataSiswa[key];
-
-    // Murid dari localStorage
-    if (key.startsWith('extra_')) {
-        const id = key.replace('extra_','');
-        try {
-            const extras = JSON.parse(localStorage.getItem('daftar_murid') || '[]');
-            const m = extras.find(x => x.id === id);
-            if (!m) return null;
-
-            const lKey = 'laporan_' + m.nama.replace(/\s+/g,'_').toLowerCase();
-            const lap = JSON.parse(localStorage.getItem(lKey));
-            if (!lap) return null;
-
-            // Bangun objek format dataSiswa dari laporan tersimpan
-            return {
-                nama: m.nama, kelas: m.kelas, fase: lap.fase || 'Fondasi',
-                wali: lap.guru || '-', semester: lap.semester || '-',
-                tb: (lap.tb || '-') + ' cm', bb: (lap.bb || '-') + ' kg',
-                aspek: [
-                    { key:'agama',    icon:'🕌', judul:'Nilai Agama dan Moral',    narasi: lap.agama    || '-' },
-                    { key:'karakter', icon:'⭐', judul:'Karakter Siswa',            narasi: lap.karakter_narasi || '-' },
-                    { key:'fisik',    icon:'🏃', judul:'Fisik Motorik',             narasi: lap.fisik    || '-' },
-                    { key:'kognitif', icon:'🧠', judul:'Kognitif',                  narasi: lap.kognitif || '-' },
-                    { key:'bahasa',   icon:'📚', judul:'Bahasa dan Literasi',       narasi: lap.bahasa   || '-' },
-                    { key:'sosem',    icon:'🤝', judul:'Sosial Emosional',          narasi: lap.sosem    || '-' },
-                    { key:'seni',     icon:'🎨', judul:'Seni dan Kreativitas',      narasi: lap.seni     || '-' },
-                ],
-                karakter: (lap.karakter_capaian || []).map(k => ({ bidang: k.bidang, capaian: k.capaian || '-' })),
-                kesehatan: [
-                    { aspek:'Penglihatan (Mata)',        ket: lap.mata    || '-' },
-                    { aspek:'Pendengaran (Telinga)',      ket: lap.telinga || '-' },
-                    { aspek:'Kesehatan Mulut dan Gigi',   ket: lap.gigi    || '-' },
-                    { aspek:'Kerapian dalam Berpakaian',  ket: lap.rapian  || '-' },
-                    { aspek:'Berat Badan',                ket: (lap.bb||'-') + ' Kg' },
-                    { aspek:'Tinggi Badan',               ket: (lap.tb||'-') + ' Cm' },
-                ],
-                catatan: lap.catatan || '-',
-            };
-        } catch { return null; }
-    }
-    return null;
 }
 
 document.getElementById('btnTampil').addEventListener('click', () => {
     renderRapor(document.getElementById('studentSelect').value);
 });
+
 window.addEventListener('DOMContentLoaded', () => {
     populateDropdown();
     renderRapor('Akleema');
 });
 
-// AUTH
+// AUTH - Sinkron dengan cookie server
 const userChip  = document.getElementById('userChip');
 const userLbl   = document.getElementById('userNameLabel');
 const btnMasuk  = document.getElementById('btnMasuk');
 const btnLogout = document.getElementById('btnLogout');
 
-function getSession() { try { const r = localStorage.getItem('tkbp_user'); return r ? JSON.parse(r) : null; } catch { return null; } }
 function renderAuth() {
-    const u = getSession();
-    if (u) {
-        userChip.style.display  = 'flex';
-        btnLogout.style.display = 'inline-flex';
-        btnMasuk.style.display  = 'none';
-        userLbl.textContent     = u.name || 'Pengguna';
-    } else {
-        userChip.style.display  = 'none';
-        btnLogout.style.display = 'none';
-        btnMasuk.style.display  = 'inline-flex';
-    }
+    fetch('/api/user')
+        .then(res => res.json())
+        .then(u => {
+            if (u && u.nama) {
+                userChip.style.display = 'flex';
+                btnLogout.style.display = 'inline-flex';
+                btnMasuk.style.display = 'none';
+                userLbl.textContent = u.nama;
+            } else {
+                userChip.style.display = 'none';
+                btnLogout.style.display = 'none';
+                btnMasuk.style.display = 'inline-flex';
+            }
+        })
+        .catch(() => {
+            userChip.style.display = 'none';
+            btnLogout.style.display = 'none';
+            btnMasuk.style.display = 'inline-flex';
+        });
 }
-function openModal()  { document.getElementById('logoutModal').classList.add('show'); }
-function closeModal() { document.getElementById('logoutModal').classList.remove('show'); }
-function doLogout()   { localStorage.removeItem('tkbp_user'); closeModal(); renderAuth(); }
-document.getElementById('logoutModal').addEventListener('click', function(e) { if (e.target===this) closeModal(); });
+
+function openModal() { 
+    document.getElementById('logoutModal').classList.add('show'); 
+}
+
+function closeModal() { 
+    document.getElementById('logoutModal').classList.remove('show'); 
+}
+
+function doLogout() { 
+    window.location.href = '/logout';
+}
+
+document.getElementById('logoutModal')?.addEventListener('click', function(e) { 
+    if (e.target === this) closeModal(); 
+});
+
 renderAuth();
 </script>
 </body>

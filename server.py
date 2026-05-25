@@ -4,6 +4,7 @@ import urllib.parse
 import mysql.connector
 from http import cookies
 import re
+import json
 
 class WebTKHandler(BaseHTTPRequestHandler):
     
@@ -40,28 +41,42 @@ class WebTKHandler(BaseHTTPRequestHandler):
         role_aktif = user_info['role'] if user_info else None
 
         # --- ROUTING HALAMAN GET ---
-        if self.path == '/' or self.path == '/index.html':
+        
+        # API endpoint untuk mendapatkan user yang login
+        if self.path == '/api/user':
+            if user_info:
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(json.dumps(user_info).encode())
+            else:
+                self.send_response(200)
+                self.send_header('Content-type', 'application/json')
+                self.end_headers()
+                self.wfile.write(b'null')
+        
+        elif self.path == '/' or self.path == '/index.html':
             self.kirim_halaman_beranda('templates/index.html', user_aktif, role_aktif)
         
-        # TAMBAHAN: Rute untuk menampilkan halaman PPDB
         elif self.path == '/ppdb.html' or self.path == '/templates/ppdb.html':
             self.kirim_halaman_statis('templates/ppdb.html', user_aktif, role_aktif)
             
         elif self.path == '/profil.html' or self.path == '/templates/profil.html':
             self.kirim_halaman_statis('templates/profil.html', user_aktif, role_aktif)
+            
         elif self.path == '/jadwal.html' or self.path == '/templates/jadwal.html':
             self.kirim_halaman_statis('templates/jadwal.html', user_aktif, role_aktif)
         
         elif self.path == '/laporan.html' or self.path == '/templates/laporan.html':
-            if not user_aktif:
-                self.alihkan_ke('/login')
-            else:
-                self.kirim_halaman_laporan('templates/laporan.html', user_aktif, username_aktif, role_aktif)
+            # Izinkan semua akses tanpa login
+            self.kirim_halaman_laporan('templates/laporan.html', user_aktif, username_aktif, role_aktif)
 
         elif self.path == '/login':
             self.tampilkan_file_mentah('templates/login.html', 'text/html')
+            
         elif self.path == '/register':
             self.tampilkan_file_mentah('templates/register.html', 'text/html')
+            
         elif self.path == '/logout':
             # Hapus cookie session saat logout
             cookie = cookies.SimpleCookie()
@@ -75,11 +90,8 @@ class WebTKHandler(BaseHTTPRequestHandler):
             self.send_header('Location', '/')
             self.end_headers()
             
-        # TAMBAHAN OLEH SYSTEM: Membaca semua gambar .jpeg (tk.jpeg, foto-anak.jpeg, dll) secara dinamis
-        elif self.path.endswith('.jpeg') or self.path.endswith('.jpg'):
-            # Menghapus tanda '/' di awal path file gambar
+        elif self.path.endswith('.jpeg') or self.path.endswith('.jpg') or self.path.endswith('.png'):
             nama_file_gambar = self.path.lstrip('/')
-            # Jika file ada di folder static, arahkan ke folder static
             if os.path.exists(f"static/{nama_file_gambar}"):
                 self.tampilkan_file_mentah(f"static/{nama_file_gambar}", 'image/jpeg')
             elif os.path.exists(nama_file_gambar):
@@ -151,21 +163,58 @@ class WebTKHandler(BaseHTTPRequestHandler):
             if not role_aktif or role_aktif != 'guru':
                 self.send_error(403, "Akses dilarang")
                 return
-            username_ortu = params.get('username_ortu', [''])[0]
-            nama_anak = params.get('nama_anak', [''])[0]
-            aspek_agama = params.get('aspek_agama', [''])[0]
-            aspek_motorik = params.get('aspek_motorik', [''])[0]
-            aspek_kognitif = params.get('aspek_kognitif', [''])[0]
-            aspek_sosial = params.get('aspek_sosial', [''])[0]
+
+            username_ortu  = params.get('username_ortu', [''])[0]
+            nama_anak      = params.get('nama_anak',     [''])[0]
+            kelas          = params.get('kelas',         [''])[0]
+            semester       = params.get('semester',      [''])[0]
+            tb             = params.get('tb',            [''])[0]
+            bb             = params.get('bb',            [''])[0]
+            narasi_agama    = params.get('narasi_agama',    [''])[0]
+            narasi_karakter = params.get('narasi_karakter', [''])[0]
+            narasi_fisik    = params.get('narasi_fisik',    [''])[0]
+            narasi_kognitif = params.get('narasi_kognitif', [''])[0]
+            narasi_bahasa   = params.get('narasi_bahasa',   [''])[0]
+            narasi_sosem    = params.get('narasi_sosem',    [''])[0]
+            narasi_seni     = params.get('narasi_seni',     [''])[0]
+            karakter_1 = params.get('karakter_1', ['MM'])[0]
+            karakter_2 = params.get('karakter_2', ['MM'])[0]
+            karakter_3 = params.get('karakter_3', ['MM'])[0]
+            karakter_4 = params.get('karakter_4', ['MM'])[0]
+            karakter_5 = params.get('karakter_5', ['MM'])[0]
+            kes_mata    = params.get('kes_mata',    ['Baik'])[0]
+            kes_telinga = params.get('kes_telinga', ['Baik'])[0]
+            kes_gigi    = params.get('kes_gigi',    ['Baik'])[0]
+            kes_rapian  = params.get('kes_rapian',  ['Baik'])[0]
             catatan_guru = params.get('catatan_guru', [''])[0]
 
             conn = self.get_db_connection()
             if conn:
                 cursor = conn.cursor()
                 cursor.execute("DELETE FROM tbl_laporan WHERE username_ortu = %s", (username_ortu,))
-                sql = """INSERT INTO tbl_laporan (username_ortu, nama_anak, aspek_agama, aspek_motorik, aspek_kognitif, aspek_sosial, catatan_guru) 
-                         VALUES (%s, %s, %s, %s, %s, %s, %s)"""
-                cursor.execute(sql, (username_ortu, nama_anak, aspek_agama, aspek_motorik, aspek_kognitif, aspek_sosial, catatan_guru))
+                sql = """INSERT INTO tbl_laporan (
+                            username_ortu, nama_anak, kelas, semester, tb, bb,
+                            narasi_agama, narasi_karakter, narasi_fisik, narasi_kognitif,
+                            narasi_bahasa, narasi_sosem, narasi_seni,
+                            karakter_1, karakter_2, karakter_3, karakter_4, karakter_5,
+                            kes_mata, kes_telinga, kes_gigi, kes_rapian,
+                            catatan_guru
+                         ) VALUES (
+                            %s, %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s,
+                            %s, %s, %s,
+                            %s, %s, %s, %s, %s,
+                            %s, %s, %s, %s,
+                            %s
+                         )"""
+                cursor.execute(sql, (
+                    username_ortu, nama_anak, kelas, semester, tb, bb,
+                    narasi_agama, narasi_karakter, narasi_fisik, narasi_kognitif,
+                    narasi_bahasa, narasi_sosem, narasi_seni,
+                    karakter_1, karakter_2, karakter_3, karakter_4, karakter_5,
+                    kes_mata, kes_telinga, kes_gigi, kes_rapian,
+                    catatan_guru
+                ))
                 conn.commit()
                 cursor.close()
                 conn.close()
@@ -242,7 +291,6 @@ class WebTKHandler(BaseHTTPRequestHandler):
 
             html_content = self.pasang_navbar_dinamis(html_content, nama_user, role_user)
 
-            # JIKA ADMIN LOGIN: Suntikkan tabel rekap PPDB di bagian paling bawah kontainer <main> asli
             if role_user == 'admin':
                 conn = self.get_db_connection()
                 baris_tabel = ""
@@ -288,20 +336,60 @@ class WebTKHandler(BaseHTTPRequestHandler):
 
             html_content = self.pasang_navbar_dinamis(html_content, nama_user, role_user)
 
-            # JIKA GURU LOGIN: Suntikkan form pengisian nilai rapor anak
             if role_user == 'guru':
                 html_form_guru = '''
                 <div class="card" style="background: white; padding: 35px; border-radius: 32px; box-shadow: 0 15px 30px rgba(0,0,0,0.05); margin-top: 25px; border: 3px solid #4caf50; text-align: left;">
-                    <h3 style="color: #2e7d32; margin-bottom: 20px; font-size:1.4rem;">✍️ Ruang Kerja Guru: Input Rapor Digital</h3>
-                    <form action="/guru/input_laporan" method="POST" style="display:flex; flex-direction:column; gap:15px;">
-                        <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Username Orang Tua:</label><input type="text" name="username_ortu" style="width:100%; padding:12px; border-radius:12px; border:2px solid #cbd5e1;" required placeholder="Contoh: hana"></div>
-                        <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Nama Lengkap Anak Didik:</label><input type="text" name="nama_anak" style="width:100%; padding:12px; border-radius:12px; border:2px solid #cbd5e1;" required placeholder="Contoh: Aisha Farhana"></div>
-                        <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Nilai Nilai Agama & Moral:</label><select name="aspek_agama" style="width:100%; padding:12px; border-radius:12px; border:2px solid #cbd5e1;"><option>Berkembang Sangat Baik (BSB)</option><option>Berkembang Sesuai Harapan (BSH)</option><option>Mulai Berkembang (MB)</option></select></div>
-                        <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Nilai Fisik Motorik:</label><select name="aspek_motorik" style="width:100%; padding:12px; border-radius:12px; border:2px solid #cbd5e1;"><option>Berkembang Sangat Baik (BSB)</option><option>Berkembang Sesuai Harapan (BSH)</option><option>Mulai Berkembang (MB)</option></select></div>
-                        <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Nilai Kognitif:</label><select name="aspek_kognitif" style="width:100%; padding:12px; border-radius:12px; border:2px solid #cbd5e1;"><option>Berkembang Sangat Baik (BSB)</option><option>Berkembang Sesuai Harapan (BSH)</option><option>Mulai Berkembang (MB)</option></select></div>
-                        <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Nilai Sosial Emosional:</label><select name="aspek_sosial" style="width:100%; padding:12px; border-radius:12px; border:2px solid #cbd5e1;"><option>Berkembang Sangat Baik (BSB)</option><option>Berkembang Sesuai Harapan (BSH)</option><option>Mulai Berkembang (MB)</option></select></div>
-                        <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Catatan Penilaian Guru:</label><textarea name="catatan_guru" rows="3" style="width:100%; padding:12px; border-radius:12px; border:2px solid #cbd5e1;" required placeholder="Tuliskan ulasan perkembangan anak..."></textarea></div>
-                        <button type="submit" style="background:#4caf50; color:white; border:none; padding:14px; border-radius:14px; font-weight:bold; font-size:1rem; cursor:pointer; box-shadow:0 5px 0 #2e7d32;">🚀 Kirim Rapor ke Orang Tua</button>
+                    <h3 style="color: #2e7d32; margin-bottom: 8px; font-size:1.4rem;">✍️ Ruang Kerja Guru: Input Laporan Perkembangan Anak</h3>
+                    <p style="color:#555; margin-bottom:24px; font-size:0.95rem;">Isi seluruh kolom di bawah ini untuk mengirimkan laporan rapor ke orang tua siswa.</p>
+                    <form action="/guru/input_laporan" method="POST" style="display:flex; flex-direction:column; gap:20px;">
+                        <div style="background:#f1f8e9; border-radius:20px; padding:20px; border-left:5px solid #66bb6a;">
+                            <div style="font-weight:800; color:#2e7d32; margin-bottom:14px; font-size:1.05rem;">👤 A. Identitas Siswa</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Username Orang Tua *</label><input type="text" name="username_ortu" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" required placeholder="Contoh: hana"></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Nama Lengkap Anak *</label><input type="text" name="nama_anak" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" required placeholder="Contoh: Aisha Farhana"></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Kelas</label><input type="text" name="kelas" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: TK A"></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Semester / Tahun Ajaran</label><input type="text" name="semester" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: II / 2024-2025"></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Tinggi Badan (cm)</label><input type="number" name="tb" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: 112"></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Berat Badan (kg)</label><input type="number" name="bb" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: 21"></div>
+                            </div>
+                        </div>
+                        <div style="background:#e8f5e9; border-radius:20px; padding:20px; border-left:5px solid #43a047;">
+                            <div style="font-weight:800; color:#1b5e20; margin-bottom:14px; font-size:1.05rem;">📝 B. Narasi Aspek Perkembangan</div>
+                            <div style="display:flex; flex-direction:column; gap:14px;">
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#2e7d32;">🕌 Nilai Agama dan Moral</label><textarea name="narasi_agama" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan nilai agama dan moral anak..."></textarea></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#1976d2;">⭐ Karakter Siswa</label><textarea name="narasi_karakter" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #bbdefb; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan karakter siswa..."></textarea></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#e53935;">🏃 Fisik Motorik</label><textarea name="narasi_fisik" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffcdd2; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan fisik motorik anak..."></textarea></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#f57c00;">🧠 Kognitif</label><textarea name="narasi_kognitif" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffe0b2; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan kognitif anak..."></textarea></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#8e24aa;">📚 Bahasa dan Literasi</label><textarea name="narasi_bahasa" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #e1bee7; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan bahasa dan literasi anak..."></textarea></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#00838f;">🤝 Sosial Emosional</label><textarea name="narasi_sosem" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #b2ebf2; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan sosial emosional anak..."></textarea></div>
+                                <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#c0392b;">🎨 Seni dan Kreativitas</label><textarea name="narasi_seni" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffccbc; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan seni dan kreativitas anak..."></textarea></div>
+                            </div>
+                        </div>
+                        <div style="background:#e3f2fd; border-radius:20px; padding:20px; border-left:5px solid #1976d2;">
+                            <div style="font-weight:800; color:#0d47a1; margin-bottom:14px; font-size:1.05rem;">⭐ C. Capaian Karakter Siswa</div>
+                            <p style="font-size:0.85rem; color:#555; margin-bottom:14px;"><strong>SM</strong> = Sudah Muncul &nbsp;|&nbsp; <strong>MM</strong> = Mulai Muncul &nbsp;|&nbsp; <strong>BM</strong> = Belum Muncul</p>
+                            <div style="display:flex; flex-direction:column; gap:10px;">
+                                <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Mandiri, disiplin dan tanggung jawab</span><select name="karakter_1" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                                <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Dermawan, suka menolong dan kerjasama</span><select name="karakter_2" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                                <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Percaya diri, kreatif, dan pantang menyerah</span><select name="karakter_3" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                                <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Pemimpin yang baik dan adil</span><select name="karakter_4" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                                <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Kebersihan, kerapian, kesehatan dan keamanan</span><select name="karakter_5" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                            </div>
+                        </div>
+                        <div style="background:#fce4ec; border-radius:20px; padding:20px; border-left:5px solid #e91e63;">
+                            <div style="font-weight:800; color:#880e4f; margin-bottom:14px; font-size:1.05rem;">🏥 D. Tumbuh Kembang Anak (Kesehatan)</div>
+                            <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                                <div><label>👁️ Penglihatan (Mata)</label><input type="text" name="kes_mata" value="Baik"></div>
+                                <div><label>👂 Pendengaran (Telinga)</label><input type="text" name="kes_telinga" value="Baik"></div>
+                                <div><label>🦷 Kesehatan Mulut dan Gigi</label><input type="text" name="kes_gigi" value="Baik"></div>
+                                <div><label>👗 Kerapian dalam Berpakaian</label><input type="text" name="kes_rapian" value="Baik"></div>
+                            </div>
+                        </div>
+                        <div style="background:#fff8e1; border-radius:20px; padding:20px; border-left:5px solid #ffb300;">
+                            <div style="font-weight:800; color:#e65100; margin-bottom:10px; font-size:1.05rem;">📝 E. Catatan Guru Kelas</div>
+                            <textarea name="catatan_guru" rows="4" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffe082;" required placeholder="Tuliskan catatan khusus dan pesan untuk orang tua..."></textarea>
+                        </div>
+                        <button type="submit" style="background:linear-gradient(135deg,#4caf50,#2e7d32); color:white; border:none; padding:16px; border-radius:16px; font-weight:bold; font-size:1.05rem; cursor:pointer;">🚀 Simpan & Kirim Laporan ke Orang Tua</button>
                     </form>
                 </div>
                 '''
@@ -311,7 +399,7 @@ class WebTKHandler(BaseHTTPRequestHandler):
             else:
                 conn = self.get_db_connection()
                 data_rapor = None
-                if conn:
+                if conn and username_user:
                     cursor = conn.cursor(dictionary=True)
                     cursor.execute("SELECT * FROM tbl_laporan WHERE username_ortu = %s", (username_user,))
                     data_rapor = cursor.fetchone()
@@ -319,19 +407,68 @@ class WebTKHandler(BaseHTTPRequestHandler):
                     conn.close()
 
                 if data_rapor:
+                    def badge(val):
+                        warna = {'SM':'#e8f5e9;color:#2e7d32', 'MM':'#fff3e0;color:#e65100', 'BM':'#fce4ec;color:#c62828'}.get(val, '#f5f5f5;color:#555')
+                        return f'<span style="display:inline-block;padding:3px 14px;border-radius:30px;font-weight:700;font-size:0.85rem;background:{warna}">{val}</span>'
+
+                    karakter_rows = ''.join([
+                        f'<tr><td style="padding:9px 12px;border:1px solid #e8f5e9;">{bidang}</td>'
+                        f'<td style="padding:9px 12px;border:1px solid #e8f5e9;text-align:center;">{badge(data_rapor.get(col,"MM"))}</td>'
+                        f'<td style="padding:9px 12px;border:1px solid #e8f5e9;">{"SM: Sudah Muncul" if data_rapor.get(col,"MM")=="SM" else "MM: Mulai Muncul" if data_rapor.get(col,"MM")=="MM" else "BM: Belum Muncul"}</td>'
+                        f'</tr>'
+                        for bidang, col in [
+                            ("Mandiri, disiplin dan tanggung jawab", "karakter_1"),
+                            ("Dermawan, suka menolong dan kerjasama", "karakter_2"),
+                            ("Percaya diri, kreatif, dan pantang menyerah", "karakter_3"),
+                            ("Pemimpin yang baik dan adil", "karakter_4"),
+                            ("Kebersihan, kerapian, kesehatan dan keamanan","karakter_5"),
+                        ]
+                    ])
+
+                    aspek_html = ''.join([
+                        f'<div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);margin-bottom:14px;">'
+                        f'<div style="padding:10px 18px;font-weight:800;font-size:0.97rem;color:white;background:{bg};">{icon} {judul}</div>'
+                        f'<div style="padding:14px 18px;font-size:0.96rem;line-height:1.75;color:#3a3a3a;background:#fffdf8;border:2px solid {border};">'
+                        f'{data_rapor.get(field) or "<em style=color:#aaa>Belum diisi</em>"}</div></div>'
+                        for icon, judul, field, bg, border in [
+                            ("🕌","Nilai Agama dan Moral", "narasi_agama", "#43a047","#c8e6c9"),
+                            ("⭐","Karakter Siswa", "narasi_karakter", "#1976d2","#bbdefb"),
+                            ("🏃","Fisik Motorik", "narasi_fisik", "#e53935","#ffcdd2"),
+                            ("🧠","Kognitif", "narasi_kognitif", "#f57c00","#ffe0b2"),
+                            ("📚","Bahasa dan Literasi", "narasi_bahasa", "#8e24aa","#e1bee7"),
+                            ("🤝","Sosial Emosional", "narasi_sosem", "#00838f","#b2ebf2"),
+                            ("🎨","Seni dan Kreativitas", "narasi_seni", "#c0392b","#ffccbc"),
+                        ]
+                    ])
+
                     html_box_rapor = f'''
-                    <div class="card" style="background: white; padding: 30px; border-radius: 24px; box-shadow: 0 10px 20px rgba(0,0,0,0.04); margin-top: 20px; border: 1px solid #ffcd94; text-align: left;">
-                        <h3 style="color: #2d3e50; font-size:1.4rem;">Nama Ananda: <span style="color: #ff8c42;">{data_rapor['nama_anak']}</span> ✨</h3>
-                        <p style="color: #7a8b9e; font-size:0.9rem; margin-bottom: 20px;">Lembar Capaian Tingkat Perkembangan Anak</p>
-                        <div style="display: flex; flex-direction: column; gap: 12px; font-size:1.05rem;">
-                            <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px dashed #ddd;"><strong>✨ Nilai Agama & Moral:</strong> <span style="color:#2196f3; font-weight:bold;">{data_rapor['aspek_agama']}</span></div>
-                            <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px dashed #ddd;"><strong>🏃 Fisik Motorik:</strong> <span style="color:#2ecc71; font-weight:bold;">{data_rapor['aspek_motorik']}</span></div>
-                            <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px dashed #ddd;"><strong>🧠 Kognitif (Berpikir):</strong> <span style="color:#ff9800; font-weight:bold;">{data_rapor['aspek_kognitif']}</span></div>
-                            <div style="display:flex; justify-content:space-between; padding-bottom:8px; border-bottom:1px dashed #ddd;"><strong>🤝 Sosial Emosional:</strong> <span style="color:#e91e63; font-weight:bold;">{data_rapor['aspek_sosial']}</span></div>
+                    <div class="card" style="background:white; padding:0; border-radius:32px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.08); margin-top:20px; border:1px solid #ffcd94; text-align:left;">
+                        <div style="background:linear-gradient(135deg,#2e7d32,#43a047); padding:22px 28px;">
+                            <div style="color:white;">
+                                <div style="font-size:0.8rem;">TAMAN KANAK-KANAK</div>
+                                <div style="font-size:1.5rem; font-weight:900;">BADAK PUTIH</div>
+                                <div style="font-size:0.82rem;">Jl. Arramannik Endah No.3, Bandung 40293</div>
+                            </div>
                         </div>
-                        <div style="margin-top: 25px; background: #fff9e8; padding: 18px; border-radius: 16px; border-left: 6px solid #ffb347;">
-                            <strong style="color: #4a2a0e; display:block; margin-bottom:5px;">📝 Catatan Ulasan Guru:</strong>
-                            <p style="color: #5c4026; line-height:1.5;">"{data_rapor['catatan_guru']}"</p>
+                        <div style="background:#e8f5e9; text-align:center; padding:11px; font-weight:800;">LAPORAN PERKEMBANGAN ANAK DIDIK</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; padding:15px 20px;">
+                            <div><strong>Nama Siswa:</strong> {data_rapor['nama_anak']}</div>
+                            <div><strong>Kelas:</strong> {data_rapor.get('kelas','-')}</div>
+                            <div><strong>Semester:</strong> {data_rapor.get('semester','-')}</div>
+                            <div><strong>Tinggi Badan:</strong> {data_rapor.get('tb','-')} cm</div>
+                            <div><strong>Berat Badan:</strong> {data_rapor.get('bb','-')} kg</div>
+                        </div>
+                        <div style="padding:20px 24px;">{aspek_html}</div>
+                        <div style="padding:0 24px 20px;">
+                            <div style="font-weight:800;">⭐ Capaian Karakter Siswa</div>
+                            <table style="width:100%; border-collapse:collapse;">
+                                <thead><tr style="background:#e8f5e9;"><th>Bidang Karakter</th><th>Capaian</th><th>Keterangan</th></tr></thead>
+                                <tbody>{karakter_rows}</tbody>
+                            </table>
+                        </div>
+                        <div style="margin:0 24px 20px; background:#fff8e1; border-radius:18px; padding:16px 20px; border-left:6px solid #ffb300;">
+                            <div style="font-weight:800;">📝 Catatan Guru Kelas</div>
+                            <p>{data_rapor['catatan_guru']}</p>
                         </div>
                     </div>
                     '''
@@ -339,7 +476,7 @@ class WebTKHandler(BaseHTTPRequestHandler):
                         parts = html_content.split('</main>', 1)
                         html_content = parts[0] + html_box_rapor + '</main>' + parts[1]
                 else:
-                    html_kosong = '<div class="card" style="background:#fff5f5; border:3px dashed #e53935; padding:35px; border-radius:24px; text-align:center; margin-top:20px; color:#e53935; font-weight:bold; font-size:1.1rem;">Laporan Perkembangan Belum Terbit 📭</div>'
+                    html_kosong = '<div class="card" style="background:#fff5f5; border:3px dashed #e53935; padding:35px; border-radius:24px; text-align:center; margin-top:20px; color:#e53935; font-weight:bold;">Laporan Perkembangan Belum Terbit 📭</div>'
                     if '</main>' in html_content:
                         parts = html_content.split('</main>', 1)
                         html_content = parts[0] + html_kosong + '</main>' + parts[1]
@@ -348,7 +485,8 @@ class WebTKHandler(BaseHTTPRequestHandler):
             self.send_header('Content-type', 'text/html; charset=utf-8')
             self.end_headers()
             self.wfile.write(html_content.encode('utf-8'))
-        except Exception:
+        except Exception as e:
+            print(f"Error: {e}")
             self.tampilkan_file_mentah(jalur_html, 'text/html')
 
 def run(server_class=HTTPServer, handler_class=WebTKHandler, port=8000):
