@@ -211,15 +211,16 @@
                 const res = await fetch('/api/user');
                 const user = await res.json();
                 if (user && user.nama) {
+                    const txt_role = user.role === 'admin' ? "Admin" : (user.role === 'guru' ? "Guru" : "Orang Tua");
                     authZone.innerHTML = `
-                        <span style="background:#fff; padding:10px 18px; border-radius:50px;">👤 ${user.role === 'admin' ? 'Admin' : user.role === 'guru' ? 'Guru' : 'Orang Tua'}: ${user.nama}</span>
-                        <a href="/logout" class="nav-btn red" style="background:#e53935;">🚪 Keluar</a>
+                        <span style="font-weight: bold; color: #2d3e50; font-size: 0.95rem; background: #fff; padding: 10px 18px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-left: auto;">👤 ${txt_role}: ${user.nama} ✨</span>
+                        <a href="/logout" class="nav-btn red" style="text-decoration: none; margin-left: 10px; background-color: #e53935; box-shadow: 0 4px 0 #b71c1c; color: white;">🚪 Keluar</a>
                     `;
                 } else {
-                    authZone.innerHTML = `<a href="/login" class="nav-btn blue">🔑 Masuk Portal</a>`;
+                    authZone.innerHTML = `<a href="/login" class="nav-btn blue" style="text-decoration: none; margin-left: auto; background-color: #2196f3; box-shadow: 0 5px 0 #1565c0; color: white;">🔑 Masuk Portal</a>`;
                 }
             } catch(e) {
-                authZone.innerHTML = `<a href="/login" class="nav-btn blue">🔑 Masuk Portal</a>`;
+                authZone.innerHTML = `<a href="/login" class="nav-btn blue" style="text-decoration: none; margin-left: auto; background-color: #2196f3; box-shadow: 0 5px 0 #1565c0; color: white;">🔑 Masuk Portal</a>`;
             }
         }
         renderAuth();
