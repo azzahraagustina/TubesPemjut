@@ -288,20 +288,9 @@
     </nav>
 
     <main>
-        <div class="card">
+        <div class="card" id="laporanIntroCard">
             <h2 class="section-title">📊 Laporan Perkembangan Anak Didik</h2>
             <p style="margin-bottom:20px;line-height:1.6;">Laporan perkembangan disusun secara naratif mengacu pada Kurikulum Merdeka, mencerminkan capaian nyata anak selama satu semester.</p>
-
-            <div class="filter-box">
-                <label>👧 Pilih Nama Siswa:</label>
-                <select id="studentSelect" class="student-select"></select>
-                <button id="btnTampil" class="btn-tampil">📄 Tampilkan Rapor</button>
-            </div>
-            <div id="raporContainer">
-                <div style="text-align:center;padding:40px;color:#b67c3b;font-size:1.1rem;">
-                    🦏 Silakan pilih nama siswa lalu klik "Tampilkan Rapor"
-                </div>
-            </div>
         </div>
 
         <div class="card">
@@ -327,267 +316,177 @@
 
     <footer>
         <p>🦏 TK Badak Putih | Laporan Perkembangan Anak Didik | 📞 0812-3456-7890 | © 2026 Yayasan Ceria Bangsa</p>
-        <p style="font-size:0.75rem;">Jl. Arramannik Endah No.3 RT.001 RW.009, Kel. Sukamiskin, Kec. Arcamanik, Bandung 40293</p>
+        <p style="font-size:0.75rem;">Jl. Arcamanik Endah No.3 RT.001 RW.009, Kel. Sukamiskin, Kec. Arcamanik, Bandung 40293</p>
     </footer>
     <script>
-const dataSiswa = {
-    Akleema: {
-        nama:"Akleema Berlian Nur Haqqi", kelas:"TK A", fase:"Fondasi",
-        wali:"Siti Asmara Wistiningsh, S.Pd", semester:"I / 2024-2025", tb:"112 cm", bb:"21 kg",
-        aspek:[
-            { key:"agama",    icon:"🕌", judul:"Nilai Agama dan Moral",    narasi:"Pada semester I di TK A ini Akleema dapat mempraktikkan ajaran agama Islam dengan baik ditunjukkan ketika belajar berwudhu. Sudah dapat mengikuti kegiatan berdoa dengan baik. Dapat menunjukkan perilaku baik sesuai agama; sebelum melakukan kegiatan berdoa Akleema dapat membuat kesepakatan peraturan saat berdoa (mengangkat kedua tangan, tidak boleh ngobrol, tidak boleh lari-larian). Pada semester ini Akleema sudah dapat mengucapkan doa-doa harian dan menghafal bacaan surat-surat pendek (Al-Fatihah, Al-Ikhlas, hadist makan dan minum, doa masuk rumah, keluar rumah, doa bercermin, doa naik kendaraan) namun untuk hafalan (An Nas, Al-Falaq, doa sebelum dan bangun tidur, hadist Islam, hadist jaga perkataan) masih perlu bimbingan." },
-            { key:"karakter", icon:"⭐", judul:"Karakter Siswa",            narasi:"Akleema mulai menunjukkan perilaku baik sesuai dengan agamanya dalam kehidupan sehari-hari melalui ucapan dan perilakunya seperti santun, jujur, berlaku sopan saat berkunjung ke rumah teman, bersedekah dengan memberikan uang untuk di masukkan ke dalam kotak sedekah yang disediakan oleh sekolah, membantu ibu guru membereskan mainan. Saat kegiatan ke luar lingkungan sekolah (outing/kegiatan manasik haji), Akleema sangat senang bisa melakukan simulasi ibadah haji bersama teman." },
-            { key:"fisik",    icon:"🏃", judul:"Fisik Motorik",             narasi:"Akleema dapat menjaga kebersihan diri diantaranya membawa sampah pada tempatnya tanpa di suruh, cuci tangan setelah kegiatan main. Dapat menunjukkan sikap kepedulian diri saat menyebutkan jenis makanan sehat dan tidak sehat untuk dirinya. Alhamdulillah Akleema juga sudah terbiasa membawa bekal makanan sehat setiap harinya." },
-            { key:"kognitif", icon:"🧠", judul:"Kognitif",                  narasi:"Akleema mampu mengenal konsep bilangan 1–10 dan mulai memahami bentuk-bentuk geometri dasar. Ia menunjukkan rasa ingin tahu yang tinggi terhadap lingkungan sekitarnya, senang bertanya tentang hal-hal baru. Kemampuan memecahkan masalah sederhana seperti menyusun puzzle dan mengelompokkan benda berdasarkan warna dan bentuk sudah berkembang dengan baik." },
-            { key:"bahasa",   icon:"📚", judul:"Bahasa dan Literasi",       narasi:"Akleema mampu menyimak dan memahami cerita yang disampaikan guru dengan baik. Sudah dapat menceritakan kembali pengalaman sehari-hari menggunakan kalimat yang cukup jelas. Kemampuan mengenal huruf-huruf abjad terus berkembang; Akleema mulai dapat menulis namanya sendiri meskipun masih memerlukan bimbingan untuk kerapian tulisan." },
-            { key:"sosem",    icon:"🤝", judul:"Sosial Emosional",          narasi:"Akleema menunjukkan perkembangan sosial emosional yang positif. Ia mulai dapat mengelola emosinya sendiri ketika menghadapi situasi yang tidak menyenangkan. Aktif bermain bersama teman-teman dan mulai terbiasa berbagi mainan. Sesekali masih membutuhkan dorongan guru untuk berani tampil di depan kelas." },
-            { key:"seni",     icon:"🎨", judul:"Seni dan Kreativitas",      narasi:"Akleema sangat antusias dalam kegiatan mewarnai dan membuat karya dari bahan bekas. Hasil karya tangan Akleema rapi dan penuh warna, mencerminkan imajinasi yang kaya. Ia menikmati kegiatan menggambar bebas dan sering bercerita tentang gambar yang ia buat kepada guru dan teman-teman." }
-        ],
-        karakter:[
-            { bidang:"Mandiri, disiplin dan tanggung jawab", capaian:"SM" },
-            { bidang:"Dermawan, suka menolong dan kerjasama", capaian:"SM" },
-            { bidang:"Percaya diri, kreatif, dan pantang menyerah", capaian:"SM" },
-            { bidang:"Pemimpin yang baik dan adil", capaian:"SM" },
-            { bidang:"Kebersihan, kerapian, kesehatan dan keamanan", capaian:"SM" }
-        ],
-        kesehatan:[
-            { aspek:"Penglihatan (Mata)", ket:"Baik" }, { aspek:"Pendengaran (Telinga)", ket:"Baik" },
-            { aspek:"Kesehatan Mulut dan Gigi", ket:"Baik" }, { aspek:"Kerapian dalam Berpakaian", ket:"Baik" },
-            { aspek:"Berat Badan", ket:"21 Kg" }, { aspek:"Tinggi Badan", ket:"112 Cm" }
-        ],
-        catatan:"Akleema adalah anak yang aktif dan bersemangat. Teruskan kebiasaan baik membawa bekal sehat dan rajin berdoa. Orang tua diharapkan mendampingi hafalan surat-surat pendek di rumah agar semakin lancar. Akleema memiliki potensi yang luar biasa, terus semangat! 💪🦏"
-    },
-    Bima: {
-        nama:"Bima Sakti Pratama", kelas:"TK A", fase:"Fondasi",
-        wali:"Ibu Rina, S.Pd", semester:"I / 2024-2025", tb:"115 cm", bb:"23 kg",
-        aspek:[
-            { key:"agama",    icon:"🕌", judul:"Nilai Agama dan Moral",    narasi:"Bima sudah mulai terbiasa mengucapkan salam dan berdoa sebelum dan sesudah kegiatan. Ia menunjukkan sikap hormat terhadap guru dan orang yang lebih tua. Hafalan doa harian dan surat pendek terus berkembang; Bima sudah lancar membaca Al-Fatihah dan doa makan. Perlu bimbingan lebih lanjut untuk doa-doa lainnya." },
-            { key:"karakter", icon:"⭐", judul:"Karakter Siswa",            narasi:"Bima adalah anak yang ceria dan penuh energi. Ia mulai menunjukkan sikap tanggung jawab dengan merapikan mainannya setelah selesai bermain. Masih perlu bimbingan dalam bersabar menunggu giliran dan berbagi dengan teman. Bima sangat senang saat kegiatan di luar ruangan dan sangat bersemangat dalam permainan fisik." },
-            { key:"fisik",    icon:"🏃", judul:"Fisik Motorik",             narasi:"Bima unggul dalam kegiatan motorik kasar; ia lincah berlari, melompat, dan memanjat dengan koordinasi yang baik. Untuk motorik halus, Bima masih perlu latihan menggunting mengikuti garis lurus dan menempel dengan rapi. Orang tua diharapkan mendampingi latihan memegang pensil yang benar di rumah." },
-            { key:"kognitif", icon:"🧠", judul:"Kognitif",                  narasi:"Bima menunjukkan ketertarikan yang besar terhadap benda-benda di sekitarnya dan sering bertanya dengan antusias. Mampu mengelompokkan benda berdasarkan ukuran. Kemampuan berhitung 1–5 sudah baik, sedang dalam proses menguasai 6–10." },
-            { key:"bahasa",   icon:"📚", judul:"Bahasa dan Literasi",       narasi:"Kemampuan berbicara Bima berkembang baik; ia ekspresif dan senang bercerita kepada teman-teman. Pengenalan huruf abjad masih dalam tahap berkembang, terutama untuk membedakan huruf yang bentuknya mirip. Bima aktif menjawab pertanyaan saat sesi tanya jawab dengan guru." },
-            { key:"sosem",    icon:"🤝", judul:"Sosial Emosional",          narasi:"Bima mudah bergaul dan disukai teman-temannya. Ia mulai belajar mengungkapkan perasaan dengan kata-kata saat merasa kesal atau sedih, meskipun masih perlu pendampingan. Kemampuan berbagi mainan terus meningkat dibanding awal semester." },
-            { key:"seni",     icon:"🎨", judul:"Seni dan Kreativitas",      narasi:"Bima menikmati kegiatan seni terutama membuat karya tiga dimensi dari balok dan plastisin. Hasil karya mewarnainya masih perlu bimbingan untuk lebih rapi, namun ia selalu antusias dan tidak pernah berhenti di tengah jalan." }
-        ],
-        karakter:[
-            { bidang:"Mandiri, disiplin dan tanggung jawab", capaian:"MM" },
-            { bidang:"Dermawan, suka menolong dan kerjasama", capaian:"SM" },
-            { bidang:"Percaya diri, kreatif, dan pantang menyerah", capaian:"SM" },
-            { bidang:"Pemimpin yang baik dan adil", capaian:"MM" },
-            { bidang:"Kebersihan, kerapian, kesehatan dan keamanan", capaian:"MM" }
-        ],
-        kesehatan:[
-            { aspek:"Penglihatan (Mata)", ket:"Baik" }, { aspek:"Pendengaran (Telinga)", ket:"Baik" },
-            { aspek:"Kesehatan Mulut dan Gigi", ket:"Baik" }, { aspek:"Kerapian dalam Berpakaian", ket:"Baik" },
-            { aspek:"Berat Badan", ket:"23 Kg" }, { aspek:"Tinggi Badan", ket:"115 Cm" }
-        ],
-        catatan:"Bima adalah anak yang penuh semangat dan memiliki potensi besar terutama dalam fisik motorik. Orang tua diharapkan mendampingi latihan motorik halus di rumah dan terus mendorong kebiasaan sabar berbagi dengan teman. Pertahankan semangatnya! 🏃‍♂️"
-    },
-    Cinta: {
-        nama:"Cinta Laura Aulia", kelas:"TK B", fase:"Fondasi",
-        wali:"Ibu Dewi, S.Pd", semester:"II / 2024-2025", tb:"118 cm", bb:"22 kg",
-        aspek:[
-            { key:"agama",    icon:"🕌", judul:"Nilai Agama dan Moral",    narasi:"Pada semester II ini Cinta semakin menunjukkan perilaku terpuji dalam kehidupan sehari-hari. Ia selalu memulai dan mengakhiri setiap kegiatan dengan berdoa. Hafalan surat-surat pendek Cinta sudah sangat baik; ia lancar membaca Al-Fatihah, An-Nas, Al-Falaq, Al-Ikhlas, Al-Kautsar, dan Al-Kafirun." },
-            { key:"karakter", icon:"⭐", judul:"Karakter Siswa",            narasi:"Cinta adalah anak yang rajin, disiplin, dan sangat peduli terhadap teman-temannya. Ia sering menjadi contoh teladan dalam kelas karena selalu mengikuti aturan dengan baik. Sikap dermawan Cinta terlihat jelas ketika ia secara spontan membantu teman yang kesulitan mengerjakan tugas." },
-            { key:"fisik",    icon:"🏃", judul:"Fisik Motorik",             narasi:"Motorik halus Cinta sangat baik; hasil mewarnai, menggunting, dan menempel miliknya selalu rapi dan teliti. Kemampuan menulis huruf dan angka sudah berkembang pesat melampaui capaian rata-rata usianya." },
-            { key:"kognitif", icon:"🧠", judul:"Kognitif",                  narasi:"Cinta menunjukkan kemampuan berpikir yang tajam. Ia sudah mampu mengenal dan mengurutkan angka 1–20, memahami konsep penjumlahan sederhana, serta mengelompokkan benda berdasarkan lebih dari satu ciri." },
-            { key:"bahasa",   icon:"📚", judul:"Bahasa dan Literasi",       narasi:"Kemampuan literasi Cinta luar biasa untuk usianya. Ia sudah dapat membaca suku kata dan kata-kata pendek dengan lancar serta senang bercerita panjang menggunakan kosa kata yang kaya. Cinta terpilih sebagai Duta Literasi Kelas TK B." },
-            { key:"sosem",    icon:"🤝", judul:"Sosial Emosional",          narasi:"Cinta memiliki kecerdasan emosional yang tinggi. Ia mampu mengungkapkan perasaannya dengan baik dan peka terhadap perasaan orang lain. Cinta selalu menjadi penengah yang baik saat terjadi perselisihan kecil antar teman." },
-            { key:"seni",     icon:"🎨", judul:"Seni dan Kreativitas",      narasi:"Cinta sangat berbakat dalam seni. Kemampuan menarinya menonjol dan ia aktif dalam latihan tari untuk acara pentas seni sekolah. Hasil karya lukisan dan kolase miliknya selalu penuh detail dan warna yang harmonis." }
-        ],
-        karakter:[
-            { bidang:"Mandiri, disiplin dan tanggung jawab", capaian:"SM" },
-            { bidang:"Dermawan, suka menolong dan kerjasama", capaian:"SM" },
-            { bidang:"Percaya diri, kreatif, dan pantang menyerah", capaian:"SM" },
-            { bidang:"Pemimpin yang baik dan adil", capaian:"SM" },
-            { bidang:"Kebersihan, kerapian, kesehatan dan keamanan", capaian:"SM" }
-        ],
-        kesehatan:[
-            { aspek:"Penglihatan (Mata)", ket:"Baik" }, { aspek:"Pendengaran (Telinga)", ket:"Baik" },
-            { aspek:"Kesehatan Mulut dan Gigi", ket:"Baik" }, { aspek:"Kerapian dalam Berpakaian", ket:"Sangat Baik" },
-            { aspek:"Berat Badan", ket:"22 Kg" }, { aspek:"Tinggi Badan", ket:"118 Cm" }
-        ],
-        catatan:"Cinta adalah bintang kelas yang memberi inspirasi bagi teman-temannya. Terus pertahankan semangat belajar dan kepeduliannya. Orang tua diharapkan terus mendukung minat seni dan literasinya di rumah. Masa depan Cinta sangat cerah! ⭐🌟"
-    },
-    Dion: {
-        nama:"Dion Alvaro Setiawan", kelas:"TK B", fase:"Fondasi",
-        wali:"Ibu Dewi, S.Pd", semester:"II / 2024-2025", tb:"116 cm", bb:"24 kg",
-        aspek:[
-            { key:"agama",    icon:"🕌", judul:"Nilai Agama dan Moral",    narasi:"Dion sudah terbiasa berdoa sebelum dan sesudah kegiatan di sekolah. Hafalan doa harian terus berkembang; Dion lancar mengucapkan doa makan, doa tidur, dan doa masuk-keluar rumah. Untuk hafalan surat pendek seperti Al-Ikhlas dan Al-Falaq, Dion masih memerlukan pengulangan dan bimbingan di rumah." },
-            { key:"karakter", icon:"⭐", judul:"Karakter Siswa",            narasi:"Dion adalah anak yang mandiri dan cukup percaya diri. Ia sudah terbiasa merapikan tas dan peralatan belajarnya sendiri tanpa harus diingatkan. Masih dalam proses belajar untuk bersabar menunggu giliran dan berbagi mainan dengan teman." },
-            { key:"fisik",    icon:"🏃", judul:"Fisik Motorik",             narasi:"Kemampuan motorik kasar Dion sangat baik; ia aktif dan lincah dalam berbagai permainan fisik. Untuk motorik halus, Dion masih perlu latihan lebih lanjut dalam kegiatan menggunting mengikuti pola dan mewarnai dengan rapi di dalam garis." },
-            { key:"kognitif", icon:"🧠", judul:"Kognitif",                  narasi:"Dion mulai menunjukkan perkembangan yang lebih baik dalam mengenal angka dan huruf. Ia sudah mampu menghitung 1–10 dan mengenal beberapa huruf abjad. Dion senang bermain dengan balok konstruksi dan menunjukkan kreativitas dalam membangun bentuk-bentuk baru." },
-            { key:"bahasa",   icon:"📚", judul:"Bahasa dan Literasi",       narasi:"Kemampuan komunikasi Dion berkembang cukup baik. Ia sudah dapat mengungkapkan kebutuhan dan keinginannya dalam kalimat lengkap. Dion mulai tertarik mendengarkan cerita dan sering meminta guru mengulang cerita yang ia suka." },
-            { key:"sosem",    icon:"🤝", judul:"Sosial Emosional",          narasi:"Dion menunjukkan perkembangan sosial yang positif. Ia mulai lebih terbuka dalam berinteraksi dengan teman-teman baru. Masih perlu bimbingan dalam mengelola emosi ketika keinginannya tidak terpenuhi." },
-            { key:"seni",     icon:"🎨", judul:"Seni dan Kreativitas",      narasi:"Dion menunjukkan minat yang baik dalam kegiatan seni terutama membuat karya tiga dimensi dari tanah liat dan plastisin. Hasil karyanya selalu menggambarkan benda-benda yang ia sukai seperti kendaraan dan hewan." }
-        ],
-        karakter:[
-            { bidang:"Mandiri, disiplin dan tanggung jawab", capaian:"MM" },
-            { bidang:"Dermawan, suka menolong dan kerjasama", capaian:"MM" },
-            { bidang:"Percaya diri, kreatif, dan pantang menyerah", capaian:"SM" },
-            { bidang:"Pemimpin yang baik dan adil", capaian:"BM" },
-            { bidang:"Kebersihan, kerapian, kesehatan dan keamanan", capaian:"MM" }
-        ],
-        kesehatan:[
-            { aspek:"Penglihatan (Mata)", ket:"Baik" }, { aspek:"Pendengaran (Telinga)", ket:"Baik" },
-            { aspek:"Kesehatan Mulut dan Gigi", ket:"Baik" }, { aspek:"Kerapian dalam Berpakaian", ket:"Cukup Baik" },
-            { aspek:"Berat Badan", ket:"24 Kg" }, { aspek:"Tinggi Badan", ket:"116 Cm" }
-        ],
-        catatan:"Dion anak yang ceria dan aktif dengan potensi besar. Orang tua diharapkan mendampingi latihan motorik halus dan pengenalan huruf/angka di rumah. Pertahankan semangat kehadirannya dan terus dukung perkembangan sosial-emosionalnya. Dion pasti bisa! 💪"
-    }
-};
-
-const badgeCls = { SM:"badge-sm", MM:"badge-mm", BM:"badge-bm" };
-const badgeTxt = { SM:"Sudah Muncul (SM)", MM:"Mulai Muncul (MM)", BM:"Belum Muncul (BM)" };
-
-function renderRapor(key) {
-    const s = dataSiswa[key];
-    if (!s) return;
-    const c = document.getElementById('raporContainer');
-
-    const aspekHTML = s.aspek.map(a => `
-        <div class="aspek-item aspek-${a.key}">
-            <div class="aspek-judul">${a.icon} ${a.judul}</div>
-            <div class="aspek-narasi">${a.narasi}</div>
-        </div>`).join('');
-
-    const karakterHTML = s.karakter.map(k => `
-        <tr><td style="padding:9px 12px;border:1px solid #e8f5e9;">${k.bidang}</td>
-        <td style="text-align:center;"><span class="capaian-badge ${badgeCls[k.capaian]}">${k.capaian}</span></td>
-        <td>${badgeTxt[k.capaian]}</td>
-        </tr>`).join('');
-
-    const kesehatanHTML = s.kesehatan.map((k,i) =>
-        `<tr><td>${i+1}</td><td>${k.aspek}</td><td>${k.ket}</td></tr>`).join('');
-
-    c.innerHTML = `
-    <div class="rapor-wrap">
-        <div class="rapor-header">
-            <img src="/tk.jpeg" class="rapor-logo" alt="Logo"
-                 onerror="this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Ccircle fill=%22%23ffb347%22 cx=%2250%22 cy=%2250%22 r=%2245%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2240%22 text-anchor=%22middle%22 fill=%22white%22%3E🦏%3C/text%3E%3C/svg%3E'">
-            <div class="rapor-sekolah">
-                <p style="font-size:0.8rem;opacity:0.85;">TAMAN KANAK-KANAK</p>
-                <h2>BADAK PUTIH</h2>
-                <p>Jl. Arramannik Endah No.3 RT.001 RW.009, Kel. Sukamiskin, Kec. Arcamanik, Bandung 40293</p>
-            </div>
-        </div>
-        <div class="rapor-judul">LAPORAN PERKEMBANGAN ANAK DIDIK</div>
-        <div class="rapor-identitas">
-            <div class="id-row"><span class="id-key">Nama Sekolah</span><span class="id-val">TK Badak Putih</span></div>
-            <div class="id-row"><span class="id-key">Kelas</span><span class="id-val">${s.kelas}</span></div>
-            <div class="id-row"><span class="id-key">Nama Siswa</span><span class="id-val">${s.nama}</span></div>
-            <div class="id-row"><span class="id-key">Fase</span><span class="id-val">${s.fase}</span></div>
-            <div class="id-row"><span class="id-key">Semester / TA</span><span class="id-val">${s.semester}</span></div>
-            <div class="id-row"><span class="id-key">Tinggi Badan</span><span class="id-val">${s.tb}</span></div>
-            <div class="id-row"><span class="id-key">Guru Kelas</span><span class="id-val">${s.wali}</span></div>
-            <div class="id-row"><span class="id-key">Berat Badan</span><span class="id-val">${s.bb}</span></div>
-        </div>
-        <div class="aspek-list">${aspekHTML}</div>
-        <div style="padding:0 24px 20px;">
-            <div style="font-weight:800;font-size:1rem;color:#1b5e20;margin-bottom:10px;">⭐ A. Karakter Siswa — Capaian Perkembangan</div>
-            <table class="tabel-rapor">
-                <thead><tr><th>Bidang Pengembangan Karakter</th><th style="text-align:center;width:80px;">Capaian</th><th>Keterangan</th></tr></thead>
-                <tbody>${karakterHTML}</tbody>
-            </table>
-            <p style="font-size:0.8rem;color:#666;margin-top:8px;"><strong>SM</strong> = Sudah Muncul &nbsp;|&nbsp; <strong>MM</strong> = Mulai Muncul &nbsp;|&nbsp; <strong>BM</strong> = Belum Muncul</p>
-        </div>
-        <div style="padding:0 24px 20px;">
-            <div style="font-weight:800;font-size:1rem;color:#1b5e20;margin-bottom:10px;">🏥 B. Tumbuh Kembang Anak (Kesehatan)</div>
-            <table class="tabel-rapor">
-                <thead><tr><th style="width:40px;">No</th><th>Aspek Perkembangan</th><th>Keterangan</th></tr></thead>
-                <tbody>${kesehatanHTML}</tbody>
-            </table>
-        </div>
-        <div class="rapor-catatan">
-            <h4>📝 Catatan Guru Kelas</h4>
-            <p>${s.catatan}</p>
-        </div>
-        <div class="rapor-ttd">
-            <div class="ttd-box"><p>Orang Tua / Wali</p><div class="ttd-garis"></div><p>( ................................ )</p></div>
-            <div class="ttd-box">
-                <p>Bandung, ${new Date().toLocaleDateString('id-ID',{year:'numeric',month:'long',day:'numeric'})}</p>
-                <p style="margin-top:4px;">Guru Kelas</p>
-                <div class="ttd-garis"></div>
-                <p>( ${s.wali} )</p>
-            </div>
-        </div>
-        <div class="rapor-aksi">
-            <button class="btn-wa" onclick="window.open('https://wa.me/6281234567890?text=Assalamualaikum%20Bu%20Guru,%20saya%20ingin%20konsultasi%20mengenai%20laporan%20perkembangan%20${encodeURIComponent(s.nama)}.')">
-                💬 Konsultasi via WhatsApp
-            </button>
-        </div>
-    </div>`;
-}
-
-const muridBawaan = ['Akleema','Bima','Cinta','Dion'];
-
-function populateDropdown() {
-    const sel = document.getElementById('studentSelect');
-    sel.innerHTML = '';
-    muridBawaan.forEach(k => {
-        const s = dataSiswa[k];
-        if (!s) return;
-        const opt = document.createElement('option');
-        opt.value = k;
-        opt.textContent = `${s.nama} (${s.kelas})`;
-        sel.appendChild(opt);
-    });
-}
-
-document.getElementById('btnTampil').addEventListener('click', () => {
-    renderRapor(document.getElementById('studentSelect').value);
-});
-
-window.addEventListener('DOMContentLoaded', () => {
-    populateDropdown();
-    renderRapor('Akleema');
-});
-
-// AUTH - Sinkron dengan cookie server
-const userChip  = document.getElementById('userChip');
-const userLbl   = document.getElementById('userNameLabel');
-const btnMasuk  = document.getElementById('btnMasuk');
-const btnLogout = document.getElementById('btnLogout');
-
-function renderAuth() {
-    fetch('/api/user')
-        .then(res => res.json())
-        .then(u => {
-            if (u && u.nama) {
-                userChip.style.display = 'flex';
-                btnLogout.style.display = 'inline-flex';
-                btnMasuk.style.display = 'none';
-                userLbl.textContent = u.nama;
-            } else {
-                userChip.style.display = 'none';
-                btnLogout.style.display = 'none';
-                btnMasuk.style.display = 'inline-flex';
+        async function renderAuth() {
+            const authZone = document.getElementById('authZone');
+            try {
+                const res = await fetch('/api/user');
+                const user = await res.json();
+                if (user && user.nama) {
+                    const txt_role = user.role === 'admin' ? "Admin" : (user.role === 'guru' ? "Guru" : "Orang Tua");
+                    authZone.innerHTML = `
+                        <span style="font-weight: bold; color: #2d3e50; font-size: 0.95rem; background: #fff; padding: 10px 18px; border-radius: 50px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-left: auto;">👤 ${txt_role}: ${user.nama} ✨</span>
+                        <a href="/logout" class="nav-btn red" style="text-decoration: none; margin-left: 10px; background-color: #e53935; box-shadow: 0 4px 0 #b71c1c; color: white;">🚪 Keluar</a>
+                    `;
+                    
+                    if (user.role === 'guru') {
+                        renderGuruForm();
+                    } else if (user.role === 'orang_tua') {
+                        loadOrtuRapor();
+                    }
+                } else {
+                    authZone.innerHTML = `<a href="/login" class="nav-btn blue" style="text-decoration: none; margin-left: auto; background-color: #2196f3; box-shadow: 0 5px 0 #1565c0; color: white;">🔑 Masuk Portal</a>`;
+                }
+            } catch(e) {
+                authZone.innerHTML = `<a href="/login" class="nav-btn blue" style="text-decoration: none; margin-left: auto; background-color: #2196f3; box-shadow: 0 5px 0 #1565c0; color: white;">🔑 Masuk Portal</a>`;
             }
-        })
-        .catch(() => {
-            userChip.style.display = 'none';
-            btnLogout.style.display = 'none';
-            btnMasuk.style.display = 'inline-flex';
-        });
-}
+        }
 
-function openModal() { 
-    document.getElementById('logoutModal').classList.add('show'); 
-}
+        function renderGuruForm() {
+            const html_form_guru = `
+            <div class="card" style="background: white; padding: 35px; border-radius: 32px; box-shadow: 0 15px 30px rgba(0,0,0,0.05); margin-top: 25px; border: 3px solid #4caf50; text-align: left;">
+                <h3 style="color: #2e7d32; margin-bottom: 8px; font-size:1.4rem;">✍️ Ruang Kerja Guru: Input Laporan Perkembangan Anak</h3>
+                <p style="color:#555; margin-bottom:24px; font-size:0.95rem;">Isi seluruh kolom di bawah ini untuk mengirimkan laporan rapor ke orang tua siswa.</p>
+                <form action="/guru/input_laporan" method="POST" style="display:flex; flex-direction:column; gap:20px;">
+                    <div style="background:#f1f8e9; border-radius:20px; padding:20px; border-left:5px solid #66bb6a;">
+                        <div style="font-weight:800; color:#2e7d32; margin-bottom:14px; font-size:1.05rem;">👤 A. Identitas Siswa</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:14px;">
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Username Orang Tua *</label><input type="text" name="username_ortu" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" required placeholder="Contoh: hana"></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Nama Lengkap Anak *</label><input type="text" name="nama_anak" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" required placeholder="Contoh: Aisha Farhana"></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Kelas</label><input type="text" name="kelas" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: TK A"></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Semester / Tahun Ajaran</label><input type="text" name="semester" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: II / 2024-2025"></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Tinggi Badan (cm)</label><input type="number" name="tb" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: 112"></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px;">Berat Badan (kg)</label><input type="number" name="bb" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit;" placeholder="Contoh: 21"></div>
+                        </div>
+                    </div>
+                    <div style="background:#e8f5e9; border-radius:20px; padding:20px; border-left:5px solid #43a047;">
+                        <div style="font-weight:800; color:#1b5e20; margin-bottom:14px; font-size:1.05rem;">📝 B. Narasi Aspek Perkembangan</div>
+                        <div style="display:flex; flex-direction:column; gap:14px;">
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#2e7d32;">🕌 Nilai Agama dan Moral</label><textarea name="narasi_agama" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #c8e6c9; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan nilai agama dan moral anak..."></textarea></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#1976d2;">⭐ Karakter Siswa</label><textarea name="narasi_karakter" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #bbdefb; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan karakter siswa..."></textarea></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#e53935;">🏃 Fisik Motorik</label><textarea name="narasi_fisik" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffcdd2; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan fisik motorik anak..."></textarea></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#f57c00;">🧠 Kognitif</label><textarea name="narasi_kognitif" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffe0b2; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan kognitif anak..."></textarea></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#8e24aa;">📚 Bahasa dan Literasi</label><textarea name="narasi_bahasa" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #e1bee7; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan bahasa dan literasi anak..."></textarea></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#00838f;">🤝 Sosial Emosional</label><textarea name="narasi_sosem" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #b2ebf2; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan sosial emosional anak..."></textarea></div>
+                            <div><label style="display:block; font-weight:bold; margin-bottom:6px; color:#c0392b;">🎨 Seni dan Kreativitas</label><textarea name="narasi_seni" rows="3" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffccbc; font-family:inherit; resize:vertical;" placeholder="Tuliskan narasi perkembangan seni dan kreativitas anak..."></textarea></div>
+                        </div>
+                    </div>
+                    <div style="background:#e3f2fd; border-radius:20px; padding:20px; border-left:5px solid #1976d2;">
+                        <div style="font-weight:800; color:#0d47a1; margin-bottom:14px; font-size:1.05rem;">⭐ C. Capaian Karakter Siswa</div>
+                        <p style="font-size:0.85rem; color:#555; margin-bottom:14px;"><strong>SM</strong> = Sudah Muncul &nbsp;|&nbsp; <strong>MM</strong> = Mulai Muncul &nbsp;|&nbsp; <strong>BM</strong> = Belum Muncul</p>
+                        <div style="display:flex; flex-direction:column; gap:10px;">
+                            <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Mandiri, disiplin dan tanggung jawab</span><select name="karakter_1" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                            <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Dermawan, suka menolong dan kerjasama</span><select name="karakter_2" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                            <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Percaya diri, kreatif, dan pantang menyerah</span><select name="karakter_3" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                            <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Pemimpin yang baik dan adil</span><select name="karakter_4" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                            <div style="display:flex; align-items:center; gap:12px; background:white; padding:10px 14px; border-radius:12px;"><span style="flex:1; font-size:0.95rem;">Kebersihan, kerapian, kesehatan dan keamanan</span><select name="karakter_5" style="padding:8px 12px; border-radius:10px; border:2px solid #bbdefb;"><option value="SM">SM</option><option value="MM" selected>MM</option><option value="BM">BM</option></select></div>
+                        </div>
+                    </div>
+                    <div style="background:#fce4ec; border-radius:20px; padding:20px; border-left:5px solid #e91e63;">
+                        <div style="font-weight:800; color:#880e4f; margin-bottom:14px; font-size:1.05rem;">🏥 D. Tumbuh Kembang Anak (Kesehatan)</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+                            <div><label>👁️ Penglihatan (Mata)</label><input type="text" name="kes_mata" value="Baik"></div>
+                            <div><label>👂 Pendengaran (Telinga)</label><input type="text" name="kes_telinga" value="Baik"></div>
+                            <div><label>🦷 Kesehatan Mulut dan Gigi</label><input type="text" name="kes_gigi" value="Baik"></div>
+                            <div><label>👗 Kerapian dalam Berpakaian</label><input type="text" name="kes_rapian" value="Baik"></div>
+                        </div>
+                    </div>
+                    <div style="background:#fff8e1; border-radius:20px; padding:20px; border-left:5px solid #ffb300;">
+                        <div style="font-weight:800; color:#e65100; margin-bottom:10px; font-size:1.05rem;">📝 E. Catatan Guru Kelas</div>
+                        <textarea name="catatan_guru" rows="4" style="width:100%; padding:11px 14px; border-radius:12px; border:2px solid #ffe082;" required placeholder="Tuliskan catatan khusus dan pesan untuk orang tua..."></textarea>
+                    </div>
+                    <button type="submit" style="background:linear-gradient(135deg,#4caf50,#2e7d32); color:white; border:none; padding:16px; border-radius:16px; font-weight:bold; font-size:1.05rem; cursor:pointer;">🚀 Simpan & Kirim Laporan ke Orang Tua</button>
+                </form>
+            </div>
+            `;
+            document.querySelector('main').insertAdjacentHTML('beforeend', html_form_guru);
+        }
 
-function closeModal() { 
-    document.getElementById('logoutModal').classList.remove('show'); 
-}
+        async function loadOrtuRapor() {
+            try {
+                const res = await fetch('/api/ortu/rapor');
+                const data_rapor = await res.json();
+                
+                if (data_rapor) {
+                    const badge = (val) => {
+                        const warna = val === 'SM' ? '#e8f5e9;color:#2e7d32' : (val === 'MM' ? '#fff3e0;color:#e65100' : (val === 'BM' ? '#fce4ec;color:#c62828' : '#f5f5f5;color:#555'));
+                        return `<span style="display:inline-block;padding:3px 14px;border-radius:30px;font-weight:700;font-size:0.85rem;background:${warna}">${val}</span>`;
+                    };
 
-function doLogout() { 
-    window.location.href = '/logout';
-}
+                    const bidangList = [
+                        { b: "Mandiri, disiplin dan tanggung jawab", c: "karakter_1" },
+                        { b: "Dermawan, suka menolong dan kerjasama", c: "karakter_2" },
+                        { b: "Percaya diri, kreatif, dan pantang menyerah", c: "karakter_3" },
+                        { b: "Pemimpin yang baik dan adil", c: "karakter_4" },
+                        { b: "Kebersihan, kerapian, kesehatan dan keamanan", c: "karakter_5" }
+                    ];
+                    
+                    let karakter_rows = "";
+                    for (let item of bidangList) {
+                        let val = data_rapor[item.c] || "MM";
+                        let desc = val === "SM" ? "SM: Sudah Muncul" : (val === "MM" ? "MM: Mulai Muncul" : "BM: Belum Muncul");
+                        karakter_rows += `<tr><td style="padding:9px 12px;border:1px solid #e8f5e9;">${item.b}</td><td style="padding:9px 12px;border:1px solid #e8f5e9;text-align:center;">${badge(val)}</td><td style="padding:9px 12px;border:1px solid #e8f5e9;">${desc}</td></tr>`;
+                    }
 
-document.getElementById('logoutModal')?.addEventListener('click', function(e) { 
-    if (e.target === this) closeModal(); 
-});
+                    const aspekList = [
+                        { icon:"🕌", judul:"Nilai Agama dan Moral", field:"narasi_agama", bg:"#43a047", border:"#c8e6c9" },
+                        { icon:"⭐", judul:"Karakter Siswa", field:"narasi_karakter", bg:"#1976d2", border:"#bbdefb" },
+                        { icon:"🏃", judul:"Fisik Motorik", field:"narasi_fisik", bg:"#e53935", border:"#ffcdd2" },
+                        { icon:"🧠", judul:"Kognitif", field:"narasi_kognitif", bg:"#f57c00", border:"#ffe0b2" },
+                        { icon:"📚", judul:"Bahasa dan Literasi", field:"narasi_bahasa", bg:"#8e24aa", border:"#e1bee7" },
+                        { icon:"🤝", judul:"Sosial Emosional", field:"narasi_sosem", bg:"#00838f", border:"#b2ebf2" },
+                        { icon:"🎨", judul:"Seni dan Kreativitas", field:"narasi_seni", bg:"#c0392b", border:"#ffccbc" }
+                    ];
 
-renderAuth();
-</script>
+                    let aspek_html = "";
+                    for (let item of aspekList) {
+                        aspek_html += `<div style="border-radius:16px;overflow:hidden;box-shadow:0 4px 12px rgba(0,0,0,0.05);margin-bottom:14px;"><div style="padding:10px 18px;font-weight:800;font-size:0.97rem;color:white;background:${item.bg};">${item.icon} ${item.judul}</div><div style="padding:14px 18px;font-size:0.96rem;line-height:1.75;color:#3a3a3a;background:#fffdf8;border:2px solid ${item.border};">${data_rapor[item.field] || "<em style=color:#aaa>Belum diisi</em>"}</div></div>`;
+                    }
+
+                    const html_box_rapor = `
+                    <div class="card" style="background:white; padding:0; border-radius:32px; overflow:hidden; box-shadow:0 15px 35px rgba(0,0,0,0.08); margin-top:20px; border:1px solid #ffcd94; text-align:left;">
+                        <div style="background:linear-gradient(135deg,#2e7d32,#43a047); padding:22px 28px;">
+                            <div style="color:white;">
+                                <div style="font-size:0.8rem;">TAMAN KANAK-KANAK</div>
+                                <div style="font-size:1.5rem; font-weight:900;">BADAK PUTIH</div>
+                                <div style="font-size:0.82rem;">Jl. Arramannik Endah No.3, Bandung 40293</div>
+                            </div>
+                        </div>
+                        <div style="background:#e8f5e9; text-align:center; padding:11px; font-weight:800;">LAPORAN PERKEMBANGAN ANAK DIDIK</div>
+                        <div style="display:grid; grid-template-columns:1fr 1fr; padding:15px 20px;">
+                            <div><strong>Nama Siswa:</strong> ${data_rapor.nama_anak}</div>
+                            <div><strong>Kelas:</strong> ${data_rapor.kelas || '-'}</div>
+                            <div><strong>Semester:</strong> ${data_rapor.semester || '-'}</div>
+                            <div><strong>Tinggi Badan:</strong> ${data_rapor.tb || '-'} cm</div>
+                            <div><strong>Berat Badan:</strong> ${data_rapor.bb || '-'} kg</div>
+                        </div>
+                        <div style="padding:20px 24px;">${aspek_html}</div>
+                        <div style="padding:0 24px 20px;">
+                            <div style="font-weight:800;">⭐ Capaian Karakter Siswa</div>
+                            <table style="width:100%; border-collapse:collapse;">
+                                <thead><tr style="background:#e8f5e9;"><th>Bidang Karakter</th><th>Capaian</th><th>Keterangan</th></tr></thead>
+                                <tbody>${karakter_rows}</tbody>
+                            </table>
+                        </div>
+                        <div style="margin:0 24px 20px; background:#fff8e1; border-radius:18px; padding:16px 20px; border-left:6px solid #ffb300;">
+                            <div style="font-weight:800;">📝 Catatan Guru Kelas</div>
+                            <p>${data_rapor.catatan_guru}</p>
+                        </div>
+                    </div>
+                    `;
+                    document.querySelector('main').insertAdjacentHTML('beforeend', html_box_rapor);
+                } else {
+                    const html_kosong = '<div class="card" style="background:#fff5f5; border:3px dashed #e53935; padding:35px; border-radius:24px; text-align:center; margin-top:20px; color:#e53935; font-weight:bold;">Laporan Perkembangan Belum Terbit 📭</div>';
+                    document.querySelector('main').insertAdjacentHTML('beforeend', html_kosong);
+                }
+            } catch (e) {
+                console.error("Gagal memuat rapor", e);
+            }
+        }
+
+        renderAuth();
+    </script>
 </body>
 </html>

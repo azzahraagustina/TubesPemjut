@@ -161,10 +161,28 @@
     </main>
 
     <footer>
-        <p>🦏 TK Badak Putih | Jl. Arramannik Endah No.3, Bandung | 📞 0812-3456-7890</p>
+        <p>🦏 TK Badak Putih | Jl. Arcamanik Endah No.3, Kel. Sukamiskin, Kec. Arcamanik, Bandung 40293 | 📞 0812-3456-7890</p>
     </footer>
 
-    <!-- Memanggil JS dari folder static -->
-    <script src="/static/index.js"></script>
+    <script>
+        async function renderAuth() {
+            const authZone = document.getElementById('authZone');
+            try {
+                const res = await fetch('/api/user');
+                const user = await res.json();
+                if (user && user.nama) {
+                    authZone.innerHTML = `
+                        <span style="background:#fff; padding:10px 18px; border-radius:50px;">👤 ${user.role === 'admin' ? 'Admin' : user.role === 'guru' ? 'Guru' : 'Orang Tua'}: ${user.nama}</span>
+                        <a href="/logout" class="nav-btn red" style="background:#e53935;">🚪 Keluar</a>
+                    `;
+                } else {
+                    authZone.innerHTML = `<a href="/login" class="nav-btn blue">🔑 Masuk Portal</a>`;
+                }
+            } catch(e) {
+                authZone.innerHTML = `<a href="/login" class="nav-btn blue">🔑 Masuk Portal</a>`;
+            }
+        }
+        renderAuth();
+    </script>
 </body>
 </html>

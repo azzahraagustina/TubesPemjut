@@ -1,0 +1,15 @@
+{
+  "name": "web-tk-tubes",
+  "version": "1.0.0",
+  "description": "Sistem Informasi TK",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.22.2",
+    "mysql2": "^3.22.4"
+  }
+}
