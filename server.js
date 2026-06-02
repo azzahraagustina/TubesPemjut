@@ -82,6 +82,96 @@ app.get('/api/admin/ppdb', async (req, res) => {
     }
 });
 
+app.get('/api/guru/ortu-list', async (req, res) => {
+    const user = getLoggedInUser(req);
+    if (!user || (user.role !== 'guru' && user.role !== 'admin')) {
+        return res.status(403).json({ error: "Unauthorized" });
+    }
+    
+    const conn = await getDbConnection();
+    if (conn) {
+        try {
+            const [rows] = await conn.execute("SELECT username, nama FROM tbl_users WHERE role = 'orang_tua' ORDER BY nama ASC");
+            res.json(rows);
+        } catch (err) {
+            res.status(500).json({ error: "Database error" });
+        } finally {
+            await conn.end();
+        }
+    } else {
+        res.status(500).json({ error: "Database connection failed" });
+    }
+});
+
+app.get('/api/guru/laporan', async (req, res) => {
+    const user = getLoggedInUser(req);
+    if (!user || (user.role !== 'guru' && user.role !== 'admin')) {
+        return res.status(403).json({ error: "Unauthorized" });
+    }
+    
+    const conn = await getDbConnection();
+    if (conn) {
+        try {
+            const [rows] = await conn.execute("SELECT * FROM tbl_laporan ORDER BY id DESC");
+            res.json(rows);
+        } catch (err) {
+            res.status(500).json({ error: "Database error" });
+        } finally {
+            await conn.end();
+        }
+    } else {
+        res.status(500).json({ error: "Database connection failed" });
+    }
+});
+
+app.get('/api/guru/laporan/:username_ortu', async (req, res) => {
+    const user = getLoggedInUser(req);
+    if (!user || (user.role !== 'guru' && user.role !== 'admin')) {
+        return res.status(403).json({ error: "Unauthorized" });
+    }
+    
+    const { username_ortu } = req.params;
+    const conn = await getDbConnection();
+    if (conn) {
+        try {
+            const [rows] = await conn.execute("SELECT * FROM tbl_laporan WHERE username_ortu = ?", [username_ortu]);
+            if (rows.length > 0) {
+                res.json(rows[0]);
+            } else {
+                res.status(404).json({ error: "Laporan tidak ditemukan" });
+            }
+        } catch (err) {
+            res.status(500).json({ error: "Database error" });
+        } finally {
+            await conn.end();
+        }
+    } else {
+        res.status(500).json({ error: "Database connection failed" });
+    }
+});
+
+app.delete('/api/guru/laporan/:username_ortu', async (req, res) => {
+    const user = getLoggedInUser(req);
+    if (!user || (user.role !== 'guru' && user.role !== 'admin')) {
+        return res.status(403).json({ error: "Unauthorized" });
+    }
+    
+    const { username_ortu } = req.params;
+    const conn = await getDbConnection();
+    if (conn) {
+        try {
+            await conn.execute("DELETE FROM tbl_laporan WHERE username_ortu = ?", [username_ortu]);
+            res.json({ success: true, message: "Laporan berhasil dihapus" });
+        } catch (err) {
+            res.status(500).json({ error: "Database error" });
+        } finally {
+            await conn.end();
+        }
+    } else {
+        res.status(500).json({ error: "Database connection failed" });
+    }
+});
+
 app.get('/api/ortu/rapor', async (req, res) => {
     const user = getLoggedInUser(req);
     if (!user || user.username === undefined) {
@@ -175,7 +265,7 @@ app.post('/login', async (req, res) => {
 
 app.post('/guru/input_laporan', async (req, res) => {
     const user = getLoggedInUser(req);
-    if (!user || user.role !== 'guru') {
+    if (!user || (user.role !== 'guru' && user.role !== 'admin')) {
         return res.status(403).send("Akses dilarang");
     }
 
@@ -214,6 +304,9 @@ app.post('/guru/input_laporan', async (req, res) => {
         } finally {
             await conn.end();
         }
+    }
+    if (req.headers['content-type'] === 'application/json' || req.xhr) {
+        return res.json({ success: true, message: "Laporan berhasil disimpan" });
     }
     res.redirect('/laporan.html');
 });
