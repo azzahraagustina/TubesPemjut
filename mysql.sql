@@ -1,10 +1,12 @@
+-- Active: 1780890904155@@acela.proxy.rlwy.net@58195
 -- ============================================
 -- DATABASE TK BADAK PUTIH - FULL STRUCTURE
 -- ============================================
 
 -- Buat database
-CREATE DATABASE IF NOT EXISTS db_tk_badak_putih;
-USE db_tk_badak_putih;
+USE railway;
+--CREATE DATABASE IF NOT EXISTS db_tk_badak_putih;
+--USE db_tk_badak_putih;
 
 -- ============================================
 -- 1. TABEL USERS (3 Role: admin, guru, orang_tua)
@@ -22,6 +24,9 @@ CREATE TABLE tbl_users (
 -- 2. TABEL LAPORAN PERKEMBANGAN ANAK (LENGKAP)
 -- ============================================
 DROP TABLE IF EXISTS tbl_laporan;
+USE railway;
+
+DROP TABLE IF EXISTS tbl_laporan;
 CREATE TABLE tbl_laporan (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username_ortu VARCHAR(50) NOT NULL,
@@ -30,8 +35,6 @@ CREATE TABLE tbl_laporan (
     semester VARCHAR(50),
     tb VARCHAR(10),
     bb VARCHAR(10),
-    
-    -- Narasi 7 Aspek Perkembangan
     narasi_agama TEXT,
     narasi_karakter TEXT,
     narasi_fisik TEXT,
@@ -39,21 +42,15 @@ CREATE TABLE tbl_laporan (
     narasi_bahasa TEXT,
     narasi_sosem TEXT,
     narasi_seni TEXT,
-    
-    -- Capaian Karakter (SM/MM/BM)
     karakter_1 VARCHAR(5),
     karakter_2 VARCHAR(5),
     karakter_3 VARCHAR(5),
     karakter_4 VARCHAR(5),
     karakter_5 VARCHAR(5),
-    
-    -- Data Kesehatan
     kes_mata VARCHAR(50),
     kes_telinga VARCHAR(50),
     kes_gigi VARCHAR(50),
     kes_rapian VARCHAR(50),
-    
-    -- Catatan Guru
     catatan_guru TEXT
 );
 

@@ -26,14 +26,15 @@ app.use(express.static(__dirname, {
     }
 }));
 
-// Database Connection function
+// Database Connection function (Sudah Terhubung ke Cloud Railway)
 async function getDbConnection() {
     try {
         const connection = await mysql.createConnection({
-            host: 'localhost',
-            user: 'root',
-            password: '',
-            database: 'db_tk_badak_putih'
+            host: 'acela.proxy.rlwy.net',                     // Alamat host public Railway kamu
+            user: 'root',                                     // Username bawaan Railway
+            password: 'gNwREBAZxLqJfMzvPLWGttsRtmxnZlYG',     // Password MYSQL_ROOT_PASSWORD kamu
+            database: 'railway',                              // Nama database utama Railway kamu
+            port: 58195                                       // Port public unik milikmu
         });
         return connection;
     } catch (error) {
