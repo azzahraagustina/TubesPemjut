@@ -19,6 +19,8 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 // Serve template files langsung sebagai static HTML
 app.use(express.static(path.join(__dirname, 'templates')));
 
+// Bagian bawah kode ini (app.listen atau rute database lainnya) jangan dihapus, biarkan saja
+
 // Serve images in root directory (like tk.jpeg)
 app.use(express.static(__dirname, {
     setHeaders: (res, path) => {
@@ -200,7 +202,7 @@ app.get('/api/ortu/rapor', async (req, res) => {
     }
 });
 
-// ==== PAGE ROUTES ====
+// ==== PAGE ROUTES (Optional, as express.static handles them, but good for custom paths) ====
 
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'index.html'));
@@ -241,6 +243,10 @@ app.post('/register', async (req, res) => {
     }
 });
 
+// ==========================================
+// KODE OTOMATIS BIKIN AKUN DEMO & FIX ROUTING
+// ==========================================
+
 // Fungsi rahasia agar server otomatis ngisi akun admin & guru kalau DB masih kosong
 async function autoCreateAccounts(conn) {
     try {
@@ -265,6 +271,7 @@ const prosesMasukPintu = async (req, res) => {
 
     if (conn) {
         try {
+            // Panggil fungsi pembuat akun otomatis
             await autoCreateAccounts(conn);
 
             const [rows] = await conn.execute("SELECT * FROM tbl_users WHERE username = ? AND password = ?", [username || '', password || '']);
@@ -296,6 +303,15 @@ app.post('/login', prosesMasukPintu);
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'login.html'));
 });
+
+    if (userValid) {
+        res.cookie('session_user_tk', userValid.nama, { path: '/' });
+        res.cookie('session_username_tk', userValid.username, { path: '/' });
+        res.cookie('session_role_tk', userValid.role, { path: '/' });
+        res.redirect('/');
+    } else {
+        res.redirect('/login.html');
+    }
 
 app.post('/guru/input_laporan', async (req, res) => {
     const user = getLoggedInUser(req);
