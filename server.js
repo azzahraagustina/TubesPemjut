@@ -243,43 +243,16 @@ app.post('/register', async (req, res) => {
     }
 });
 
-// ==========================================
-// KODE OTOMATIS BIKIN AKUN DEMO & FIX ROUTING
-// ==========================================
-
-// Fungsi rahasia agar server otomatis ngisi akun admin & guru kalau DB masih kosong
-async function autoCreateAccounts(conn) {
-    try {
-        const [rows] = await conn.execute("SELECT COUNT(*) as count FROM tbl_users");
-        if (rows[0].count === 0) {
-            console.log("[SYSTEM]: Database masih kosong, otomatis mendaftarkan akun demo...");
-            await conn.execute("INSERT INTO tbl_users (nama, username, password, role) VALUES ('Kepala Sekolah', 'admin', 'admin123', 'admin')");
-            await conn.execute("INSERT INTO tbl_users (nama, username, password, role) VALUES ('Ibu Guru Badak', 'guru', 'guru123', 'guru')");
-            await conn.execute("INSERT INTO tbl_users (nama, username, password, role) VALUES ('Bapak Budi', 'budi', 'budi123', 'orang_tua')");
-            console.log("[SYSTEM]: Akun admin, guru, dan budi siap dipakai!");
-        }
-    } catch (err) {
-        console.error("Gagal auto-create akun:", err.message);
-    }
-}
-
-// Handler login tunggal
-const prosesMasukPintu = async (req, res) => {
+app.post('/login.html', async (req, res) => {
     const { username, password } = req.body;
     const conn = await getDbConnection();
     let userValid = null;
-
     if (conn) {
         try {
-            // Panggil fungsi pembuat akun otomatis
-            await autoCreateAccounts(conn);
-
             const [rows] = await conn.execute("SELECT * FROM tbl_users WHERE username = ? AND password = ?", [username || '', password || '']);
             if (rows.length > 0) {
                 userValid = rows[0];
             }
-        } catch (err) {
-            console.error("Error login:", err.message);
         } finally {
             await conn.end();
         }
@@ -293,25 +266,7 @@ const prosesMasukPintu = async (req, res) => {
     } else {
         res.redirect('/login.html');
     }
-};
-
-// Daftarkan rute POST biar gak error 405 lagi di browser
-app.post('/login.html', prosesMasukPintu);
-app.post('/login', prosesMasukPintu);
-
-// Biar kalau ketik URL tanpa .html tetep kebuka halaman loginnya
-app.get('/login', (req, res) => {
-    res.sendFile(path.join(__dirname, 'templates', 'login.html'));
 });
-
-    if (userValid) {
-        res.cookie('session_user_tk', userValid.nama, { path: '/' });
-        res.cookie('session_username_tk', userValid.username, { path: '/' });
-        res.cookie('session_role_tk', userValid.role, { path: '/' });
-        res.redirect('/');
-    } else {
-        res.redirect('/login.html');
-    }
 
 app.post('/guru/input_laporan', async (req, res) => {
     const user = getLoggedInUser(req);
