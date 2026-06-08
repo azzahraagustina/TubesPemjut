@@ -10,10 +10,10 @@ async function renderAuth() {
                 <a href="/logout" class="nav-btn red" style="background:#e53935;">🚪 Keluar</a>
             `;
         } else {
-            authZone.innerHTML = `<a href="/login" class="nav-btn blue">🔑 Masuk Portal</a>`;
+            authZone.innerHTML = `<a href="/login.html" class="nav-btn blue">🔑 Masuk Portal</a>`;
         }
     } catch(e) {
-        authZone.innerHTML = `<a href="/login" class="nav-btn blue">🔑 Masuk Portal</a>`;
+        authZone.innerHTML = `<a href="/login.html" class="nav-btn blue">🔑 Masuk Portal</a>`;
     }
 }
 
