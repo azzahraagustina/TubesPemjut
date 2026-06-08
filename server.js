@@ -4,18 +4,22 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const app = express();
-const port = https://cozy-vision-production.up.railway.app;
+
+// PERBAIKAN PORT: Menggunakan port bawaan Railway, atau port 3000 jika di local komputer
+const port = process.env.PORT || 3000;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 app.use(cookieParser());
 
-// Serve static files
+// Serve static files (untuk file CSS/JS/Gambar di folder static)
 app.use('/static', express.static(path.join(__dirname, 'static')));
 
-// Serve template files directly as static HTML
+// Serve template files langsung sebagai static HTML
 app.use(express.static(path.join(__dirname, 'templates')));
+
+// Bagian bawah kode ini (app.listen atau rute database lainnya) jangan dihapus, biarkan saja
 
 // Serve images in root directory (like tk.jpeg)
 app.use(express.static(__dirname, {
@@ -228,7 +232,7 @@ app.post('/register', async (req, res) => {
     if (conn) {
         try {
             await conn.execute("INSERT INTO tbl_users (nama, username, password, role) VALUES (?, ?, ?, 'orang_tua')", [nama || '', username || '', password || '']);
-            res.redirect('/login');
+            res.redirect('/login.html');
         } catch (err) {
             res.redirect('/register');
         } finally {
@@ -239,7 +243,7 @@ app.post('/register', async (req, res) => {
     }
 });
 
-app.post('/login', async (req, res) => {
+app.post('/login.html', async (req, res) => {
     const { username, password } = req.body;
     const conn = await getDbConnection();
     let userValid = null;
@@ -260,7 +264,7 @@ app.post('/login', async (req, res) => {
         res.cookie('session_role_tk', userValid.role, { path: '/' });
         res.redirect('/');
     } else {
-        res.redirect('/login');
+        res.redirect('/login.html');
     }
 });
 
