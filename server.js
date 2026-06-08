@@ -4,7 +4,7 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 
 const app = express();
-const port = 8000;
+const port = https://cozy-vision-production.up.railway.app;
 
 // Middleware
 app.use(express.urlencoded({ extended: true }));
@@ -204,7 +204,7 @@ app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'index.html'));
 });
 
-app.get('/login', (req, res) => {
+app.get('/login.html', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'login.html'));
 });
 
