@@ -34,11 +34,11 @@ app.use(express.static(__dirname, {
 async function getDbConnection() {
     try {
         const connection = await mysql.createConnection({
-            host: process.env.MYSQLHOST || 'acela.proxy.rlwy.net',                     // Alamat host public/private Railway kamu
-            user: process.env.MYSQLUSER || 'root',                                     // Username bawaan Railway
-            password: process.env.MYSQLPASSWORD || 'gNwREBAZxLqJfMzvPLWGttsRtmxnZlYG', // Password MYSQL_ROOT_PASSWORD kamu
-            database: process.env.MYSQLDATABASE || 'railway',                          // Nama database utama Railway kamu
-            port: process.env.MYSQLPORT ? parseInt(process.env.MYSQLPORT) : 58195      // Port public/private unik milikmu
+            host: 'acela.proxy.rlwy.net',                     // Alamat host public Railway kamu
+            user: 'root',                                     // Username bawaan Railway
+            password: 'gNwREBAZxLqJfMzvPLWGttsRtmxnZlYG',     // Password MYSQL_ROOT_PASSWORD kamu
+            database: 'railway',                              // Nama database utama Railway kamu
+            port: 58195                                       // Port public unik milikmu
         });
         return connection;
     } catch (error) {
@@ -303,6 +303,15 @@ app.post('/login', prosesMasukPintu);
 app.get('/login', (req, res) => {
     res.sendFile(path.join(__dirname, 'templates', 'login.html'));
 });
+
+    if (userValid) {
+        res.cookie('session_user_tk', userValid.nama, { path: '/' });
+        res.cookie('session_username_tk', userValid.username, { path: '/' });
+        res.cookie('session_role_tk', userValid.role, { path: '/' });
+        res.redirect('/');
+    } else {
+        res.redirect('/login.html');
+    }
 
 app.post('/guru/input_laporan', async (req, res) => {
     const user = getLoggedInUser(req);
